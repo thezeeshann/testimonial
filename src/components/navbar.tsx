@@ -16,8 +16,12 @@ const Navbar = () => {
           </div>
         </Link>
         <div className=" flex flex-row gap-x-3">
+          <Link href={"/signin"} >
           <Button className="text-neutral-200" variant="ghost">Sign in</Button>
+          </Link>
+          <Link href={"/signup"}>
           <Button>Sign up</Button>
+          </Link>
         </div>
       </nav>
     </header>
