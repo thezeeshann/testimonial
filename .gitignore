@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+*.env
+*migrations
+
 # production
 /build
 
