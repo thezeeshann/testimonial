@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 const SignIn = () => {
   return (
@@ -22,7 +23,14 @@ const SignIn = () => {
       <Card className="w-[420px] bg-[#25282C] mt-10 shadow-md border-[#25282C]">
         <CardHeader>
           <CardTitle>
-            <div className="bg-white py-[10px] gap-x-4 flex flex-row justify-center items-center cursor-pointer">
+            <div
+              onClick={() =>
+                signIn("google", {
+                  callbackUrl: "/dashboard",
+                })
+              }
+              className="bg-white py-[10px] gap-x-4 flex flex-row justify-center items-center cursor-pointer"
+            >
               <FcGoogle className="w-5 h-5" />
               <p className="text-neutral-600">Sign in with Google</p>
             </div>
@@ -57,9 +65,7 @@ const SignIn = () => {
           </form>
           <div className="mt-3">
             <p className="text-blue-500 cursor-pointer hover:text-neutral-200 text-sm">
-              <Link href={"/reset-password"}>
-              Forgot Password?
-              </Link>
+              <Link href={"/reset-password"}>Forgot Password?</Link>
             </p>
           </div>
         </CardContent>
