@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import "./globals.css";
 import { Toaster } from "sonner";
+import TanstackProvider from "@/components/provider/tanstack-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-[#151719]`}>
         <Navbar />
         <Toaster position="top-right" />
-        {children}
+        <TanstackProvider>{children}</TanstackProvider>
         <Footer />
       </body>
     </html>
