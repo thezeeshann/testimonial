@@ -3,8 +3,14 @@ import spaceImage from "../../../public/no-message.18de8749.svg";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import CreateSpace from "@/components/dashboard/create-space";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-const dashboard = () => {
+const dashboard = async () => {
+  const session = await auth();
+  if (!session) redirect("/signin");
+
   return (
     <section className="flex flex-col items-center px-20 py-12">
       <div className="w-full flex flex-row justify-between items-center   ">
@@ -18,6 +24,8 @@ const dashboard = () => {
         <Image src={spaceImage} width={250} height={250} alt="space image" />
         <p className="text-neutral-400 text-lg">No space yet, add a new one?</p>
       </div>
+
+      <CreateSpace />
     </section>
   );
 };

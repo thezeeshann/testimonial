@@ -14,13 +14,15 @@ import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 
 const UserMenu = ({ user }: Session) => {
+
+
   if (user) {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger>
           <Avatar>
             {user.image && (
-              <Image src={user.image} alt={user.name!} fill={true} />
+              <Image src={user.image} alt={user.name!} fill={true} height={55} width={55} />
             )}
             {!user.image && (
               <AvatarFallback className="bg-primary/25">

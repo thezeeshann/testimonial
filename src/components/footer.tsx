@@ -4,7 +4,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <section className="px-24 py-8">
+    <section className="px-24 py-12">
       <div className="flex flex-row items-end justify-start gap-x-60">
         <div className="">
           <div className="flex flex-row gap-x-1 cursor-pointer">
