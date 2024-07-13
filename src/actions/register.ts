@@ -4,6 +4,8 @@ import { registerSchema } from "@/lib/validations/register";
 import db from "@/lib/db";
 import { z } from "zod";
 import bcrypt from "bcrypt";
+import { generateEmailVerificationToken } from "./token";
+import { sendVerificationEmail } from "./email";
 
 export const register = async (values: z.infer<typeof registerSchema>) => {
   try {
@@ -23,6 +25,13 @@ export const register = async (values: z.infer<typeof registerSchema>) => {
     });
 
     if (existUser) {
+      if (!existUser.emailVerified) {
+        const verificationToken = await generateEmailVerificationToken(email);
+        const { email: tokenEmail, token } = verificationToken;
+        await sendVerificationEmail(tokenEmail, token);
+        return { success: "Email Confirmation resent" };
+      }
+
       return {
         error: "Email alredy in use!",
       };
@@ -38,9 +47,11 @@ export const register = async (values: z.infer<typeof registerSchema>) => {
       },
     });
 
-    return {
-      success: "User created successfully",
-    };
+    const verificationToken = await generateEmailVerificationToken(email);
+    const { email: tokenEmail, token } = verificationToken;
+    await sendVerificationEmail(tokenEmail, token);
+
+    return { success: "Confirmation Email Sent!" };
   } catch (error) {
     return {
       error: "Something went wrong",
