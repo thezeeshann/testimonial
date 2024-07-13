@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
-import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
@@ -52,9 +51,9 @@ const SignIn = () => {
       if (data?.success) {
         toast.success(data.success);
         router.push("/dashboard");
+        router.refresh();
       }
     },
-
   });
 
   const onSubmit = (values: z.infer<typeof loginSchema>) => {
