@@ -4,8 +4,8 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center p-24 ">
-      <div className=" flex flex-col gap-y-6">
+    <main className="flex flex-col items-center p-24">
+      <div className="flex flex-col gap-y-6">
         <p className="text-neutral-200 text-[52px] leading-none font-extrabold text-center">
           Get testimonials from your <br /> customers with ease
         </p>
@@ -27,13 +27,13 @@ export default function Home() {
           </Link>
 
           <div className="flex flex-row items-center justify-center mt-3 gap-x-1">
-            <p className="text-neutral-400 text-sm ">
+            <span className="text-neutral-400 text-sm">
               Get started with free.
-            </p>
+            </span>
             <div className="flex flex-row items-center">
-              <p className="underline text-xs text-neutral-400 font-medium cursor-pointer">
+              <span className="underline text-xs text-neutral-400 font-medium cursor-pointer">
                 See our pricing
-              </p>
+              </span>
               <span className="underline">
                 <ArrowRight size={15} color="#fff" />
               </span>

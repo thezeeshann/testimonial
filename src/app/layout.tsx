@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-[#151719]`}>
         <Navbar />
-        <Toaster position="top-right" />
+        <Toaster position="top-right" richColors   />
         <TanstackProvider>{children}</TanstackProvider>
         <Footer />
       </body>
