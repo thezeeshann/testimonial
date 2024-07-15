@@ -3,7 +3,7 @@
 import spaceImage from "../../../public/no-message.18de8749.svg";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { Flame, Pencil, Plus } from "lucide-react";
+import { CirclePlus, Flame, Pencil, Plus, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
@@ -25,11 +25,48 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useTheme } from "next-themes";
 
 const CreateSpace = () => {
   const [isOpen, setIsOPen] = useState(false);
+  const { setTheme, theme } = useTheme();
+  const [header, setHeader] = useState("Header goes here...");
+  const [message, setMessage] = useState("Your custom message goes here...");
+  const [questions, setQuestions] = useState({
+    questionOne: "Who are you / what are you working on?",
+    questionTwo: "How has [our product / service] helped you?",
+    questionThree: " What is the best thing about [our product / service]",
+  });
+
+  const { questionOne, questionTwo, questionThree } = questions;
+
+  const handleChange = (e: { target: { name: string; value: string } }) => {
+    const { name, value } = e.target;
+    setQuestions((prevQuestions) => ({
+      ...prevQuestions,
+      [name]: value,
+    }));
+  };
+
+  const handleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  };
+
+  useEffect(() => {
+    if (header === "") {
+      setHeader("Header goes here...");
+    }
+    if (message === "") {
+      setMessage("Your custom message goes here...");
+    }
+    
+  }, [header, message]);
 
   return (
     <section className="flex flex-col items-center px-20 py-12">
@@ -52,7 +89,11 @@ const CreateSpace = () => {
         <DialogTrigger asChild></DialogTrigger>
         <DialogContent className="max-w-[80%] h-[90%] overflow-y-scroll">
           <div className="flex w-full justify-between items-start flex-row ">
-            <div className="w-[40%] p-4 relative">
+            <div
+              className={`"w-[40%] p-4 relative ${
+                theme === "dark" ? "dark" : ""
+              }`}
+            >
               {/*  */}
               <DialogDescription>
                 <DialogTitle>
@@ -71,31 +112,38 @@ const CreateSpace = () => {
                   </CardTitle>
                   <CardDescription>
                     <div className="gap-y-4 mt-5 flex flex-col justify-center items-center">
-                      <p className="text-3xl font-bold">asdfasdf</p>
-                      <p>Your custom message goes here...</p>
+                      <p className="text-3xl font-bold dark:text-neutral-200">
+                        {header}
+                      </p>
+                      <p className="dark:text-neutral-200">{message}</p>
                     </div>
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div>
-                    <p className="font-semibold text-xl">QUESTIONS</p>
+                    <p className="font-semibold dark:text-neutral-200 text-xl">
+                      QUESTIONS
+                    </p>
                     <div className="bg-blue-500 max-w-12 h-1 mt-1" />
                     <ul className="flex flex-col text-sm mt-2 gap-y-1">
-                      <li>Who are you / what are you working on?</li>
+                      {/* <li>Who are you / what are you working on?</li>
                       <li>How has [our product / service] helped you?</li>
                       <li>
                         What is the best thing about [our product / service]
-                      </li>
+                      </li> */}
+                      <li>{questionOne}</li>
+                      <li>{questionTwo}</li>
+                      <li>{questionThree}</li>
                     </ul>
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button className="bg-black flex flex-row gap-x-2 w-full">
+                  <Button className="bg-black dark:bg-[#25282C] flex flex-row gap-x-2 w-full">
                     {" "}
-                    <span>
+                    <span className="dark:text-neutral-200">
                       <Pencil size={20} />
                     </span>{" "}
-                    <span>Send in text</span>{" "}
+                    <span className="dark:text-neutral-200">Send in text</span>{" "}
                   </Button>
                 </CardFooter>
               </Card>
@@ -133,8 +181,9 @@ const CreateSpace = () => {
                     Header title <span className="text-red-500">*</span>
                   </Label>
                   <Input
+                    onChange={(e) => setHeader(e.target.value)}
                     id="name"
-                    placeholder="Public URL is: testimonial.to/your-space"
+                    placeholder="would you like to give a shoutout of xyz?"
                     className="bg-white rounded-md"
                   />
                 </div>
@@ -143,23 +192,62 @@ const CreateSpace = () => {
                     Your custom message <span className="text-red-500">*</span>
                   </Label>
                   <Textarea
+                    onChange={(e) => setMessage(e.target.value)}
                     rows={4}
                     placeholder="Write a wram message to you customer, and give them simple direaction on how to make the best testimonial."
                     id="message"
                   />
                 </div>
-                <div>
+                <div className="flex flex-col gap-y-2">
                   <p>Questions</p>
+                  <div className="flex flex-col gap-y-2 ">
+                    <div className="flex flex-row gap-x-2 items-center">
+                      <Input
+                        defaultValue="Who are you / what are you working on?"
+                        name="questionOne"
+                        value={questionOne}
+                        onChange={handleChange}
+                      />
+                      <Trash2 className="text-neutral-200 cursor-pointer" />
+                    </div>
+                    <div className="flex items-center flex-row gap-x-2">
+                      <Input
+                        defaultValue="How has [out product / service] helped you?"
+                        value={questionTwo}
+                        onChange={handleChange}
+                        name="questionTwo"
+                      />
+                      <Trash2 className="text-neutral-200 cursor-pointer" />
+                    </div>
+                    <div className="flex flex-row gap-x-2 items-center">
+                      <Input
+                        defaultValue="What is the best thing [our product / service]"
+                        value={questionThree}
+                        name="questionThree"
+                        onChange={handleChange}
+                      />
+                      <Trash2 className="text-neutral-200 cursor-pointer" />
+                    </div>
+                  </div>
+                  <div className="flex items-center flex-row gap-x-1">
+                    <CirclePlus
+                      className="text-neutral-400 cursor-pointer "
+                      size={18}
+                    />
+                    <p className="text-sm">Add one (upto to 5) </p>
+                  </div>
                 </div>
-                <div className="flex flex-row justify-between gap-x-7 items-center">
+                <div className="flex flex-row justify-between gap-x-7 items-center mt-2">
                   <div className="flex flex-col items-center gap-y-2">
                     <Label htmlFor="airplane-mode">Collect star ratings</Label>
                     <Switch id="airplane-mode" />
                   </div>
-                  <div className="flex flex-col items-center gap-y-2">
-                    <Label htmlFor="airplane-mode">Choose a theme</Label>
-                    <Switch id="airplane-mode" />
-                  </div>
+                  {theme && (
+                    <div className="flex flex-col items-center gap-y-2">
+                      <Label htmlFor="airplane-mode">Choose a theme</Label>
+                      <Switch onCheckedChange={handleTheme} />
+                    </div>
+                  )}
                   <div></div>
                 </div>
 

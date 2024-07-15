@@ -26,18 +26,13 @@ export default function Home() {
             </Button>
           </Link>
 
-          <div className="flex flex-row items-center justify-center mt-3 gap-x-1">
-            <span className="text-neutral-400 text-sm">
-              Get started with free.
+          <div className="flex flex-row items-center justify-center mt-3 gap-x-1 cursor-pointer">
+            <span className="text-neutral-400 text-sm underline">
+              Get started with free
             </span>
-            <div className="flex flex-row items-center">
-              <span className="underline text-xs text-neutral-400 font-medium cursor-pointer">
-                See our pricing
-              </span>
-              <span className="underline">
-                <ArrowRight size={15} color="#fff" />
-              </span>
-            </div>
+            <span className="underline">
+              <ArrowRight size={15} color="#fff" />
+            </span>
           </div>
         </div>
       </div>

@@ -22,7 +22,7 @@ const Footer = () => {
           <p className="font-semibold text-sm text-center text-neutral-500">
             Made by ❤️{" "}
             <span className="hover:underline cursor-pointer">
-              <Link href={"https://github.com/thezeeshann"}>@thezeeshann</Link>
+              <Link target="_blank" href={"https://github.com/thezeeshann"}>@thezeeshann</Link>
             </span>
           </p>
         </div>
