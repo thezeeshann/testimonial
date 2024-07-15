@@ -23,6 +23,7 @@ model User {
   accounts      Account[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  Spaces        Spaces[]
 }
 
 model Account {
@@ -58,4 +59,21 @@ model PasswordResetToken {
   token   String
   expires DateTime
   email   String
+}
+
+enum Theme {
+  Light
+  Dark
+}
+
+model Spaces {
+  id      String  @id @default(cuid())
+  name    String
+  logo    String?
+  header  String
+  message String
+  rating  Int?
+  theme   Theme   @default(Light)
+  userId  String
+  user    User    @relation(fields: [userId], references: [id])
 }
