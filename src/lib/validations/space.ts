@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-export const themeEnum = z.enum(["Light", "Dark"]);
-
 export const spaceSchema = z.object({
   name: z.string().min(4, {
     message: "Name must be at least 4 characters logn",
@@ -13,8 +11,8 @@ export const spaceSchema = z.object({
   message: z.string().min(6, {
     message: "Message must be at least 6 characters logn",
   }),
-  rating: z.boolean(),
-  theme: themeEnum,
+  rating: z.boolean().optional(),
+  theme: z.enum(["Light", "Dark"]),
   questionOne: z.string().min(6, {
     message: "Question must be at least 6 characters logn",
   }),
