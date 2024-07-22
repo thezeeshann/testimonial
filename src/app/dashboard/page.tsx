@@ -6,7 +6,7 @@ const dashboard = async () => {
   const session = await auth();
   if (!session) redirect("/signin");
 
-  return <CreateSpace />;
+  return <CreateSpace user={session.user} expires={session.expires} />;
 };
 
 export default dashboard;
