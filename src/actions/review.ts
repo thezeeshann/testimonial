@@ -20,10 +20,13 @@ export const getSingleReview = async (slug: string) => {
   }
 };
 
-export const getReviews = async () => {
+export const getSpace = async (id: string) => {
   try {
-    const review = await db.spaces.findMany();
-    console.log(review);
+    const review = await db.spaces.findFirst({
+      where: {
+        userId: id,
+      },
+    });
     return {
       data: review,
     };

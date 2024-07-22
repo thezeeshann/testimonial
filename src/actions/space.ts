@@ -1,7 +1,8 @@
 "use server";
 
-import db from "@/lib/db";
 import { spaceSchema } from "@/lib/validations/space";
+import { currentUser } from "@/lib/user";
+import db from "@/lib/db";
 import { z } from "zod";
 
 export const space = async (values: z.infer<typeof spaceSchema>) => {
@@ -10,6 +11,13 @@ export const space = async (values: z.infer<typeof spaceSchema>) => {
     if (!validatedFields.success) {
       return {
         error: "Invalid fields!",
+      };
+    }
+
+    const user = await currentUser();
+    if (!user) {
+      return {
+        error: "Unauthorized",
       };
     }
 
@@ -36,11 +44,12 @@ export const space = async (values: z.infer<typeof spaceSchema>) => {
         questionTwo,
         rating,
         theme,
+        userId: user.id,
       },
     });
 
     return {
-      success: "You just added a new space.",
+      success: "🎉 You just added a new space.",
     };
   } catch (error: any) {
     return {
@@ -48,6 +57,3 @@ export const space = async (values: z.infer<typeof spaceSchema>) => {
     };
   }
 };
-
-// userId        String?
-// user          User?     @relation(fields: [userId], references: [id])
