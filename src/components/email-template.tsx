@@ -27,7 +27,9 @@ export function Email({ url }: EmailTemplateProp) {
               <Text style={verifyText}>
                 Follow this link to verify your email address.
               </Text>
-              <Button style={buttonStyle} href={url}>Click me</Button>
+              <Button style={buttonStyle} href={url}>
+                Click me
+              </Button>
 
               <Section style={lowerSection}>
                 <Text style={cautionText}>
@@ -59,13 +61,11 @@ const container = {
   backgroundColor: "#eee",
 };
 
-
 const buttonStyle = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
 };
-
 
 const h1 = {
   color: "#333",
