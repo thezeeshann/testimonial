@@ -5,7 +5,8 @@ import db from "@/lib/db";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { generateEmailVerificationToken } from "./token";
-import { sendVerificationEmail } from "./email";
+import { sendVerificationEmail } from "@/components/email";
+
 
 export const register = async (values: z.infer<typeof registerSchema>) => {
   try {

@@ -7,7 +7,7 @@ import bcrypt from "bcrypt";
 import { signIn } from "@/lib/auth";
 import { AuthError } from "next-auth";
 import { generateEmailVerificationToken } from "./token";
-import { sendVerificationEmail } from "./email";
+import { sendVerificationEmail } from "@/components/email";
 
 export const login = async (values: z.infer<typeof loginSchema>) => {
   try {
