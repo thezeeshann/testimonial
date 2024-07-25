@@ -1,6 +1,5 @@
 "use client";
 
-import spaceImage from "../../../public/no-message.18de8749.svg";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -11,11 +10,11 @@ import PulsatingDots from "../loading";
 import Link from "next/link";
 import { Session } from "next-auth";
 import { useGetSpace } from "@/lib/hooks/useGetReview";
+import spaceImage from "../../../public/8Iv5lqKwKsZ2g.webp";
 
 const CreateSpace = ({ user }: Session) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading } = useGetSpace(user.id);
-
 
   if (isLoading) {
     return (
@@ -37,9 +36,13 @@ const CreateSpace = ({ user }: Session) => {
         </Button>
       </div>
 
+
       {data ? (
         <div className="flex flex-row items-start justify-between flex-wrap">
-          <Link key={data?.data?.id} href={`/dashboard/products/${data?.data?.name}`}>
+          <Link
+            key={data?.data?.id}
+            href={`/dashboard/products/${data?.data?.name}`}
+          >
             <div className="bg-[#25282C] cursor-pointer w-[310px] h-[80px] border-2 border-neutral-700 my-16 rounded flex ">
               <Image
                 src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"

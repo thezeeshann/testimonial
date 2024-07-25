@@ -60,7 +60,6 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen }) => {
   const [formSuccess, setFormSucess] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const { setTheme, theme: cardTheme } = useTheme();
-  console.log(cardTheme);
   const form = useForm<z.infer<typeof spaceSchema>>({
     resolver: zodResolver(spaceSchema),
     defaultValues: {
@@ -83,7 +82,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen }) => {
       if (data?.error) {
         return toast.error(`${data.error}`);
       }
-      
+
       if (data?.success) {
         form.reset();
         setIsOpen(false);

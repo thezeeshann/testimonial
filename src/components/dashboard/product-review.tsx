@@ -28,7 +28,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                 Space public URL:{" "}
                 <Link href={`http://localhost:3000/dashboard/${slug}`} target="_blank">
                   <span className="text-neutral-400 text-sm underline cursor-pointer">
-                    {`http://localhost:300/${slug}`}
+                    {`http://localhost:300/dashboard/${slug}`}
                   </span>
                 </Link>
               </span>
