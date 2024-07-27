@@ -34,7 +34,6 @@ import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { testimonials } from "@/actions/testimonial";
-import { Link } from "lucide-react";
 import { useState } from "react";
 
 type TestimonialFormProsp = {
@@ -82,7 +81,7 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
 
   const onSubmit = (values: z.infer<typeof testimonialSchema>) => {
     mutate(values);
-    console.log(values);
+    console.log(values, "something");
   };
 
   return (
@@ -139,136 +138,158 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
               <li>{data?.data?.questionTwo}</li>
               <li>{data?.data?.questionThree}</li>
             </ul>
-
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="flex flex-col text-neutral-500 mt-3">
-                  <div className="text-lg">
-                    <ReactStars count={5} size={24} activeColor="#ffd700" />
-                  </div>
-                  <FormField
-                    control={form.control}
-                    name="message"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Textarea
-                            rows={4}
-                            {...field}
-                            placeholder="Type your message here."
-                            className="bg-white"
-                          />
-                        </FormControl>
-                        <FormDescription />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="image"
-                    render={({ field }) => (
-                      <FormItem>
-                        <Label htmlFor="title">Attach Image(s)</Label>
-                        <FormControl>
-                          <Input
-                            type="file"
-                            {...field}
-                            placeholder="would you like to give a shoutout of xyz?"
-                            className="bg-white"
-                          />
-                        </FormControl>
-                        <FormDescription />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <Label htmlFor="title">
-                          Your Name <span className="text-red-500">*</span>
-                        </Label>
-                        <FormControl>
-                          <Input {...field} className="bg-white" />
-                        </FormControl>
-                        <FormDescription />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <Label htmlFor="title">
-                          Your Email <span className="text-red-500">*</span>
-                        </Label>
-                        <FormControl>
-                          <Input {...field} className="bg-white" />
-                        </FormControl>
-                        <FormDescription />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="photo"
-                    render={({ field }) => (
-                      <FormItem>
-                        <Label htmlFor="title">Upload Your Photo</Label>
-                        <FormControl>
-                          <Input
-                            type="file"
-                            {...field}
-                            placeholder="would you like to give a shoutout of xyz?"
-                            className="bg-white"
-                          />
-                        </FormControl>
-                        <FormDescription />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="terms" {...form.register("permission")} />
-                    <label
-                      htmlFor="terms"
-                      className="text-xs text-neutral-400   peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      I give permission to use this testimonial across social
-                      channels and other marketing efforts
-                    </label>
-                  </div>
-                </div>
-              </form>
-            </Form>
           </div>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="flex flex-col text-neutral-500 mt-3">
+                <div className="text-lg">
+                  <FormField
+                    control={form.control}
+                    name="rating"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          {/* <Textarea
+                          rows={4}
+                          {...field}
+                          placeholder="Type your message here."
+                          className="bg-white"
+                        /> */}
+                          <ReactStars
+                            value={field.value}
+                            onChange={field.onChange}
+                            count={5}
+                            size={24}
+                            activeColor="#ffd700"
+                          />
+                        </FormControl>
+                        <FormDescription />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Textarea
+                          rows={4}
+                          {...field}
+                          placeholder="Type your message here."
+                          className="bg-white"
+                        />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label htmlFor="title">Attach Image(s)</Label>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          {...field}
+                          placeholder="would you like to give a shoutout of xyz?"
+                          className="bg-white"
+                        />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label htmlFor="title">
+                        Your Name <span className="text-red-500">*</span>
+                      </Label>
+                      <FormControl>
+                        <Input {...field} className="bg-white" />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label htmlFor="title">
+                        Your Email <span className="text-red-500">*</span>
+                      </Label>
+                      <FormControl>
+                        <Input {...field} type="email" className="bg-white" />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="photo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label htmlFor="title">Upload Your Photo</Label>
+                      <FormControl>
+                        <Input
+                          type="file"
+                          {...field}
+                          placeholder="would you like to give a shoutout of xyz?"
+                          className="bg-white"
+                        />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="flex items-center space-x-2">
+                  <Checkbox id="terms" {...form.register("permission")} />
+                  <label
+                    htmlFor="terms"
+                    className="text-xs text-neutral-400   peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    I give permission to use this testimonial across social
+                    channels and other marketing efforts
+                  </label>
+                </div>
+              </div>
 
-          <DialogFooter>
-            <div className="space-x-2">
-              <DialogClose asChild>
-                <Button
-                  disabled={isPending}
-                  type="submit"
-                  variant={"secondary"}
-                  className="rounded border-[1px]"
-                >
-                  Cancel
+              <Button disabled={isPending} type="submit" className="rounded">
+                  Save
                 </Button>
-              </DialogClose>
-              <Button type="submit" className="rounded">
-                Save
-              </Button>
-            </div>
-          </DialogFooter>
 
-                    {/* form submit checking remaining */}
-
+              {/* <DialogFooter > */}
+              {/* <div className="space-x-2">
+                <DialogClose asChild>
+                  <Button
+                    variant={"secondary"}
+                    className="rounded border-[1px]"
+                  >
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button disabled={isPending} type="submit" className="rounded">
+                  Save
+                </Button>
+              </div> */}
+              {/* </DialogFooter> */}
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </>

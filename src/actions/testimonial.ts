@@ -38,12 +38,11 @@ export const testimonials = async (
       },
     });
 
-    
     return {
       success: "🎉 Testimonial created.",
     };
-
   } catch (error: any) {
+    console.log(error);
     return {
       error: error.message,
     };

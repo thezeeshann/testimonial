@@ -36,9 +36,8 @@ const CreateSpace = ({ user }: Session) => {
         </Button>
       </div>
 
-
       {data ? (
-        <div className="flex flex-row items-start justify-between flex-wrap">
+        <div className="flex flex-row items-start justify-between flex-wrap ">
           <Link
             key={data?.data?.id}
             href={`/dashboard/products/${data?.data?.name}`}
@@ -51,7 +50,7 @@ const CreateSpace = ({ user }: Session) => {
                 alt="space image"
                 className=""
               />
-              <div className="text-neutral-200 flex flex-row items-center justify-between w-full p-3">
+              <div className="text-neutral-200 flex flex-row items-center justify-between w-full p-3 hover:bg-[#33363b] ">
                 <div>
                   <p className="font-semibold">{data.data?.name}</p>
                   <span className="text-sm text-neutral-400">Text: 1</span>

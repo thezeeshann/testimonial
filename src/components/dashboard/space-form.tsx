@@ -450,13 +450,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen }) => {
                     <div></div>
                   </div>
 
-                  {/* <div className="flex items-center flex-row gap-x-1">
-                    <CirclePlus
-                      className="text-neutral-400 cursor-pointer "
-                      size={18}
-                    />
-                    <p className="text-sm">Add one (upto to 3) </p>
-                  </div> */}
+
 
                   <Button
                     disabled={isPending}
