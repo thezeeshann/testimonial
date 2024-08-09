@@ -30,6 +30,7 @@ import { loginSchema } from "@/lib/validations/login";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/actions/login";
 import { toast } from "sonner";
+import PulsatingDots from "@/components/loading";
 
 const SignIn = () => {
   const router = useRouter();
@@ -130,7 +131,7 @@ const SignIn = () => {
                 )}
               />
               <Button disabled={isPending} type="submit" className=" w-full">
-                Sign in
+                {isPending ? <PulsatingDots /> : "Sign in"}
               </Button>
             </form>
           </Form>

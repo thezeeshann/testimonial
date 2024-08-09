@@ -49,7 +49,7 @@ export const login = async (values: z.infer<typeof loginSchema>) => {
       };
     }
 
-    const passwordMatch = await bcrypt.compare(password, existUser.password);
+    const passwordMatch = await bcrypt.compare(password, existUser.password!);
 
     if (!passwordMatch) {
       return {
