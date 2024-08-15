@@ -30,6 +30,7 @@ import { registerSchema } from "@/lib/validations/register";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
+import PulsatingDots from "@/components/loading";
 
 const SignUp = () => {
   const form = useForm<z.infer<typeof registerSchema>>({
@@ -45,7 +46,6 @@ const SignUp = () => {
     mutationFn: register,
 
     onError: (error) => {
-      console.log(error,"sing up error");
       toast.error("Something went wrong");
     },
 
@@ -153,7 +153,7 @@ const SignUp = () => {
                 )}
               />
               <Button disabled={isPending} type="submit" className=" w-full">
-                Sign up
+                {isPending ? <PulsatingDots /> : "Sign up"}
               </Button>
             </form>
           </Form>

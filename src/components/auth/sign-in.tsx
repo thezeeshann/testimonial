@@ -151,7 +151,6 @@ const SignIn = () => {
               <Link href="/signup">Sign up</Link>
             </span>
           </div>
-          {/* </div> */}
         </CardFooter>
       </Card>
     </section>
