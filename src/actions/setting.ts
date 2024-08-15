@@ -14,6 +14,7 @@ export const setting = async (values: z.infer<typeof settingsSchema>) => {
         error: "Invalid fields!",
       };
     }
+
     const user = await currentUser();
     if (!user) {
       return {

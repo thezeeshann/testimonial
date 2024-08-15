@@ -22,7 +22,7 @@ export const getSingleReview = async (slug: string) => {
 
 export const getSpace = async (id: string) => {
   try {
-    const review = await db.spaces.findFirst({
+    const review = await db.spaces.findMany({
       where: {
         userId: id,
       },

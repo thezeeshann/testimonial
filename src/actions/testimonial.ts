@@ -48,3 +48,21 @@ export const testimonials = async (
     };
   }
 };
+
+export const getTestimonials = async () => {
+  try {
+    const testimonial = await db.testimonial.findMany();
+    if (!testimonial) {
+      return {
+        error: "Testimonial not found",
+      };
+    }
+    return {
+      data: testimonial,
+    };
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+};
