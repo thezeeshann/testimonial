@@ -3,7 +3,7 @@ import { getSpace } from "@/actions/review";
 
 export const useGetSpace = (id:string) => {
   return useQuery({
-    queryKey: ["review"],
+    queryKey: ["space"],
     queryFn: () => getSpace(id),
   });
 };
