@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { settingsSchema } from "@/lib/validations/setting";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
@@ -18,8 +18,14 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Session } from "next-auth";
+import { useMutation } from "@tanstack/react-query";
+import { setting } from "@/actions/setting";
+import { UploadButton } from "@/app/api/uploadthing/uploadthing";
+import { toast } from "sonner";
 
 const DashboardSettings = ({ user }: Session) => {
+  const [avatarUploading, setAvatarUploading] = useState(false);
+
   const form = useForm<z.infer<typeof settingsSchema>>({
     resolver: zodResolver(settingsSchema),
     defaultValues: {
@@ -28,7 +34,24 @@ const DashboardSettings = ({ user }: Session) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof settingsSchema>) => {};
+  const { mutate, isPending } = useMutation({
+    mutationFn: setting,
+    onSuccess: (data) => {
+      if (data?.error) {
+        return toast.error(`${data.error}`);
+      }
+      if (data?.success) {
+        toast.success(`${data.success}`);
+      }
+    },
+    onError: () => {
+      toast.error("Somethig went wrong");
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof settingsSchema>) => {
+    mutate(values);
+  };
 
   return (
     <section className="flex flex-col px-20 min-h-screen py-14">
@@ -37,7 +60,7 @@ const DashboardSettings = ({ user }: Session) => {
         <div className="w-[100%] h-[1px] bg-neutral-500 mt-2" />
       </div>
 
-      <div className=" flex flex-col mt-8 w-[50%] mx-auto"> 
+      <div className=" flex flex-col mt-8 w-[50%] mx-auto">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 ">
             <FormField
@@ -84,6 +107,33 @@ const DashboardSettings = ({ user }: Session) => {
                     />
                   )}
 
+                  <UploadButton
+                    className=""
+                    onUploadBegin={() => {
+                      setAvatarUploading(true);
+                    }}
+                    onUploadError={(error) => {
+                      form.setError("image", {
+                        type: "validate",
+                        message: error.message,
+                      });
+                      setAvatarUploading(false);
+                      return;
+                    }}
+                    onClientUploadComplete={(res) => {
+                      form.setValue("image", res[0].url!);
+                      setAvatarUploading(false);
+                      return;
+                    }}
+                    endpoint="avatarUploader"
+                    content={{
+                      button({ ready }) {
+                        if (ready) return <div>Change Avatar</div>;
+                        return <div>Uploading...</div>;
+                      },
+                    }}
+                  />
+
                   <FormControl>
                     <Input
                       type="hidden"
@@ -97,7 +147,7 @@ const DashboardSettings = ({ user }: Session) => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-[35%]">
+            <Button disabled={isPending} type="submit" className="w-[35%]">
               Save my profile
             </Button>
           </form>

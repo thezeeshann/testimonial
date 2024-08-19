@@ -15,7 +15,7 @@ const EmailVerification = () => {
     if (!token) {
       toast.error("No token found");
     }
-    verifiyEmailToken(token).then((data) => {
+    verifiyEmailToken(token!).then((data) => {
       if (data.error) {
         toast.error(data.error);
       }
