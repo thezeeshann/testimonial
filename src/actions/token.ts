@@ -1,5 +1,4 @@
 "use server";
-
 import db from "@/lib/db";
 
 export const getVerficatonTokenByEmail = async (token: string) => {
@@ -40,7 +39,6 @@ export const generateEmailVerificationToken = async (email: string) => {
   return verificationToken;
 };
 
-
 export const verifiyEmailToken = async (token: string) => {
   const existingToken = await getVerficatonTokenByEmail(token);
   if (!existingToken) {
@@ -75,4 +73,62 @@ export const verifiyEmailToken = async (token: string) => {
   });
 
   return { success: "Email verified successfully" };
+};
+
+export const getPasswordResetTokenByToken = async (token: string) => {
+  try {
+    const passwordResetToken = await db.passwordResetToken.findFirst({
+      where: {
+        token: token,
+      },
+    });
+    return passwordResetToken;
+  } catch (error) {
+    return {
+      error: "Token not found",
+    };
+  }
+};
+
+export const getPasswordResetTokenByEmail = async (email: string) => {
+  try {
+    const passwordResetToken = await db.passwordResetToken.findFirst({
+      where: {
+        email: email,
+      },
+    });
+
+    return passwordResetToken;
+  } catch (error) {
+    return {
+      error: error,
+    };
+  }
+};
+
+export const generatePasswordResetToken = async (email: string) => {
+  try {
+    const token = crypto.randomUUID();
+    const expires = new Date(new Date().getTime() + 3600 * 1000);
+    const existingToken = await getPasswordResetTokenByEmail(email);
+    if (existingToken) {
+      await db.passwordResetToken.delete({
+        where: {
+          id: existingToken.id,
+        },
+      });
+    }
+
+    const passwordResetToken = await db.passwordResetToken.create({
+      data: {
+        email,
+        token,
+        expires,
+      },
+    });
+
+    return passwordResetToken;
+  } catch {
+    return null;
+  }
 };

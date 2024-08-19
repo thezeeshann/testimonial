@@ -8,7 +8,7 @@ import db from "@/lib/db";
 export const setting = async (values: z.infer<typeof settingsSchema>) => {
   try {
     const validatedFields = settingsSchema.safeParse(values);
-    const { name, image } = validatedFields.data;
+    const { name, image } = validatedFields.data!;
     if (!validatedFields.success) {
       return {
         error: "Invalid fields!",
