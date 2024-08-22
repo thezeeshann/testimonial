@@ -14,4 +14,5 @@ export const testimonialSchema = z.object({
   rating: z.number().min(1).max(5),
   photo: z.string(),
   permission: z.boolean().default(false),
+  spaceId: z.string(),
 });
