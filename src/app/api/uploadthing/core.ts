@@ -8,6 +8,11 @@ export const ourFileRouter = {
       console.log("file url", file.url);
     }
   ),
+  imageUploader: f({ image: { maxFileSize: "4MB" } }).onUploadComplete(
+    async ({ file }) => {
+      console.log("file url from imageUploader", file.url);
+    }
+  ),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
