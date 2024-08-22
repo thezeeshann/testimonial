@@ -35,6 +35,10 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { testimonials } from "@/actions/testimonial";
 import { useState } from "react";
+import {
+  UploadButton,
+  UploadDropzone,
+} from "@/app/api/uploadthing/uploadthing";
 
 type TestimonialFormProsp = {
   isOpen: boolean;
@@ -44,17 +48,16 @@ type TestimonialFormProsp = {
 
 const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
   const [formSuccess, setFormSucess] = useState(false);
-
   const form = useForm<z.infer<typeof testimonialSchema>>({
     resolver: zodResolver(testimonialSchema),
     defaultValues: {
+      name: "",
+      message: "",
       email: "",
       image: "",
-      message: "",
-      name: "",
-      permission: false,
-      photo: "",
       rating: 0,
+      photo: "",
+      permission: false,
     },
   });
 
@@ -80,8 +83,8 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
   });
 
   const onSubmit = (values: z.infer<typeof testimonialSchema>) => {
-    mutate(values);
-    console.log(values, "something");
+    mutate({ ...values, spaceId: data.data.id });
+    console.log(values, "testimonials form response");
   };
 
   return (
@@ -141,7 +144,7 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
           </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex flex-col text-neutral-500 mt-3">
+              {/* <div className="flex flex-col text-neutral-500 mt-3"> */}
                 <div className="text-lg">
                   <FormField
                     control={form.control}
@@ -149,12 +152,6 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
-                          {/* <Textarea
-                          rows={4}
-                          {...field}
-                          placeholder="Type your message here."
-                          className="bg-white"
-                        /> */}
                           <ReactStars
                             value={field.value}
                             onChange={field.onChange}
@@ -192,10 +189,25 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
                   name="image"
                   render={({ field }) => (
                     <FormItem>
-                      <Label htmlFor="title">Attach Image(s)</Label>
+                      <Label htmlFor="title">Attach Image</Label>
+                      <UploadDropzone
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          // Do something with the response
+                          console.log("Files: ", res);
+                          alert("Upload Completed Image");
+                        }}
+                        onUploadBegin={(name) => {
+                          // Do something once upload begins
+                          console.log("Uploading: ", name);
+                        }}
+                        onUploadError={(error: Error) => {
+                          alert(`ERROR! ${error.message}`);
+                        }}
+                      />
                       <FormControl>
                         <Input
-                          type="file"
+                          type="hidden"
                           {...field}
                           placeholder="would you like to give a shoutout of xyz?"
                           className="bg-white"
@@ -244,9 +256,26 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
                   render={({ field }) => (
                     <FormItem>
                       <Label htmlFor="title">Upload Your Photo</Label>
+
+                      <UploadDropzone
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          // Do something with the response
+                          console.log("Files: ", res);
+                          alert("Upload Completed Photo");
+                        }}
+                        onUploadBegin={(name) => {
+                          // Do something once upload begins
+                          console.log("Uploading: ", name);
+                        }}
+                        onUploadError={(error: Error) => {
+                          alert(`ERROR! ${error.message}`);
+                        }}
+                      />
+
                       <FormControl>
                         <Input
-                          type="file"
+                          type="hidden"
                           {...field}
                           placeholder="would you like to give a shoutout of xyz?"
                           className="bg-white"
@@ -267,27 +296,36 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
                     channels and other marketing efforts
                   </label>
                 </div>
-              </div>
 
-              <Button disabled={isPending} type="submit" className="rounded">
-                  Save
-                </Button>
-
-              {/* <DialogFooter > */}
-              {/* <div className="space-x-2">
-                <DialogClose asChild>
-                  <Button
-                    variant={"secondary"}
-                    className="rounded border-[1px]"
+                <Button
+                    disabled={isPending}
+                    type="submit"
+                    className=" w-full"
                   >
-                    Cancel
+                    Create new Space
                   </Button>
-                </DialogClose>
-                <Button disabled={isPending} type="submit" className="rounded">
-                  Save
-                </Button>
-              </div> */}
-              {/* </DialogFooter> */}
+
+              {/* </div> */}
+
+              {/* <DialogFooter>
+                <div className="space-x-2">
+                  <DialogClose asChild>
+                    <Button
+                      variant={"secondary"}
+                      className="rounded border-[1px]"
+                    >
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button
+                    disabled={isPending}
+                    type="submit"
+                    className="rounded"
+                  >
+                    Send
+                  </Button>
+                </div>
+              </DialogFooter> */}
             </form>
           </Form>
         </DialogContent>

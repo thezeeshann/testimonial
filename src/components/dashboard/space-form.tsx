@@ -54,9 +54,10 @@ import Link from "next/link";
 type SpaceFormProp = {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
+  id: string;
 };
 
-const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen }) => {
+const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
   const [formSuccess, setFormSucess] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const { setTheme, theme: cardTheme } = useTheme();
@@ -449,8 +450,6 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen }) => {
                     )}
                     <div></div>
                   </div>
-
-
 
                   <Button
                     disabled={isPending}

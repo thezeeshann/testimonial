@@ -73,7 +73,7 @@ const CreateSpace = ({ user }: Session) => {
         </div>
       )}
 
-      <SpaceForm isOpen={isOpen} setIsOpen={setIsOpen} />
+      <SpaceForm id={user.id} isOpen={isOpen} setIsOpen={setIsOpen} />
     </section>
   );
 };

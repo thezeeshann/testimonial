@@ -83,7 +83,7 @@ const SignIn = () => {
           <CardDescription>
             <p className="text-center mt-3 text-lg ">
               {" "}
-              ------ Or, sign in with your email ------{" "}
+               Or, sign in with your email
             </p>
           </CardDescription>
         </CardHeader>

@@ -85,7 +85,7 @@ const SignUp = () => {
           <CardDescription>
             <p className="text-center mt-3 text-lg ">
               {" "}
-              ------ Or, register with your email ------{" "}
+              Or, register with your email 
             </p>
           </CardDescription>
         </CardHeader>
