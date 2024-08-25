@@ -9,6 +9,7 @@ import {
   ArchiveRestore,
   FilePenLine,
   Copy,
+  MoveLeft,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
@@ -28,6 +29,7 @@ import {
 import { useState } from "react";
 import TestimonialReview from "./testimonial-review";
 import { useGetTestimonials } from "@/lib/hooks/useGetTestimonials";
+import GenerateScript from "./generate-script";
 
 type SingleReviewProp = {
   slug: string;
@@ -35,8 +37,11 @@ type SingleReviewProp = {
 
 const SingleReview = ({ slug }: SingleReviewProp) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isWallOpen, setIsWallOpen] = useState(false);
   const [like, setLike] = useState(0);
+  const [steps, setSteps] = useState(false);
   const { data } = useGetTestimonials();
+  console.log(data)
 
   return (
     <>
@@ -94,7 +99,10 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
             </div>
             <div className="flex flex-col gap-y-1">
               <p className="text-neutral-400 font-bold">SPACE SETTINGS</p>
-              <div className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]">
+              <div
+                onClick={() => setIsWallOpen(true)}
+                className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]"
+              >
                 <span>
                   <Heart size={18} />
                 </span>
@@ -216,6 +224,61 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
           </div>
         </div>
       </section>
+
+      <Dialog open={isWallOpen} onOpenChange={setIsWallOpen}>
+        <DialogContent className="max-w-[65%] h-[87%]">
+          <DialogHeader>
+            <DialogTitle className="flex  flex-row items-center  justify-center gap-x-4">
+              {steps && <MoveLeft className="cursor-pointer" onClick={() => setSteps(false)} />}
+              <p className="text-center text-3xl font-bold">
+                {" "}
+                Embed a Wall of Love
+              </p>
+            </DialogTitle>
+            <DialogDescription>
+              {steps === true ? (
+                <>
+                  <div className="flex justify-center mt-5 flex-row items-center gap-x-3 ">
+                    <p className="text-blue-800 font-semibold bg-neutral-100 px-3 py-1 rounded-full">
+                      Step 2
+                    </p>
+                    <p className="font-semibold text-lg">Customize your Wall of Love</p>
+                  </div>
+                  <div className="flex flex-row items-center justify-center mt-3">
+                  
+                  <p>Masonry - fixed</p>
+                  </div>
+
+                  <GenerateScript/>
+                  
+                </>
+              ) : (
+                <>
+                  <div className="flex justify-center mt-5 flex-row items-center gap-x-3 ">
+                    <p className="text-blue-800 font-semibold bg-neutral-100 px-3 py-1 rounded-full">
+                      Step 1
+                    </p>
+                    <p className="font-semibold text-lg">Choose a layout </p>
+                  </div>
+                  <div
+                    onClick={() => setSteps(true)}
+                    className=" mt-5 cursor-pointer mx-auto flex flex-col items-center justify-center gap-y-2 border-[1px] w-[250px]  rounded "
+                  >
+                    <Image
+                      width={250}
+                      height={250}
+                      src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/assets%2Ffixed-masonry-grid.png?alt=media&token=c75b8785-344a-4bd8-96dd-79592466d78e"
+                      alt="testimonial image"
+                    />
+                    <p>Masonry - fixed</p>
+                  </div>
+                </>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="max-w-[65%] h-[90%] overflow-y-scroll">
           <DialogHeader>
