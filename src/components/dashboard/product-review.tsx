@@ -41,7 +41,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const [like, setLike] = useState(0);
   const [steps, setSteps] = useState(false);
   const { data } = useGetTestimonials();
-  console.log(data)
+  console.log(data);
 
   return (
     <>
@@ -228,8 +228,17 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
       <Dialog open={isWallOpen} onOpenChange={setIsWallOpen}>
         <DialogContent className="max-w-[65%] h-[87%]">
           <DialogHeader>
-            <DialogTitle className="flex  flex-row items-center  justify-center gap-x-4">
-              {steps && <MoveLeft className="cursor-pointer" onClick={() => setSteps(false)} />}
+            <DialogTitle
+              className={`${
+                steps === true ? "w-[50%]" : ""
+              } flex flex-row items-center justify-center gap-x-4`}
+            >
+              {steps && (
+                <MoveLeft
+                  className="cursor-pointer"
+                  onClick={() => setSteps(false)}
+                />
+              )}
               <p className="text-center text-3xl font-bold">
                 {" "}
                 Embed a Wall of Love
@@ -237,21 +246,24 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
             </DialogTitle>
             <DialogDescription>
               {steps === true ? (
-                <>
+                <div className=" w-[50%]">
                   <div className="flex justify-center mt-5 flex-row items-center gap-x-3 ">
                     <p className="text-blue-800 font-semibold bg-neutral-100 px-3 py-1 rounded-full">
                       Step 2
                     </p>
-                    <p className="font-semibold text-lg">Customize your Wall of Love</p>
+                    <p className="font-semibold text-lg">
+                      Customize your Wall of Love
+                    </p>
                   </div>
                   <div className="flex flex-row items-center justify-center mt-3">
-                  
-                  <p>Masonry - fixed</p>
+                    <p>Masonry - fixed</p>
                   </div>
-
-                  <GenerateScript/>
-                  
-                </>
+                  <GenerateScript />
+                  {/* <div className="mt-10 flex flex-row items-center w-full justify-between gap-x-2">
+                    <Button className="w-[50%] rounded border-[1px]" variant={"secondary"}>Close</Button>
+                    <Button className="w-[50%] rounded">Copy</Button>
+                  </div> */}
+                </div>
               ) : (
                 <>
                   <div className="flex justify-center mt-5 flex-row items-center gap-x-3 ">
