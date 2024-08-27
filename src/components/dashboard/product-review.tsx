@@ -10,6 +10,7 @@ import {
   FilePenLine,
   Copy,
   MoveLeft,
+  Flame,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
@@ -25,11 +26,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TestimonialReview from "./testimonial-review";
 import { useGetTestimonials } from "@/lib/hooks/useGetTestimonials";
 import GenerateScript from "./generate-script";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type SingleReviewProp = {
   slug: string;
@@ -38,6 +42,7 @@ type SingleReviewProp = {
 const SingleReview = ({ slug }: SingleReviewProp) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWallOpen, setIsWallOpen] = useState(false);
+  const [isCardOpen, setIsCardOpen] = useState(false);
   const [like, setLike] = useState(0);
   const [steps, setSteps] = useState(false);
   const { data } = useGetTestimonials();
@@ -226,7 +231,8 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
       </section>
 
       <Dialog open={isWallOpen} onOpenChange={setIsWallOpen}>
-        <DialogContent className="max-w-[65%] h-[87%]">
+        <DialogTrigger asChild></DialogTrigger>
+        <DialogContent className="max-w-[65%] h-[90%] overflow-y-scroll overflow-x-hidden">
           <DialogHeader>
             <DialogTitle
               className={`${
@@ -259,10 +265,112 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                     <p>Masonry - fixed</p>
                   </div>
                   <GenerateScript />
-                  {/* <div className="mt-10 flex flex-row items-center w-full justify-between gap-x-2">
-                    <Button className="w-[50%] rounded border-[1px]" variant={"secondary"}>Close</Button>
-                    <Button className="w-[50%] rounded">Copy</Button>
-                  </div> */}
+                  <div className="flex flex-col mt-5 gap-y-4">
+                    <Button
+                      variant={"secondary"}
+                      className="rounded max-w-max border-[1px]"
+                    >
+                      Basic
+                    </Button>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox id="terms" />
+                      <label
+                        htmlFor="terms"
+                        className="text-sm text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Enable show more button for long text
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox id="terms" />
+                      <label
+                        htmlFor="terms"
+                        className="text-sm text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Hide the date
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox id="terms" />
+                      <label
+                        htmlFor="terms"
+                        className="text-sm text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Hide source icons
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox id="terms" />
+                      <label
+                        htmlFor="terms"
+                        className="text-sm text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Randomize the order on page refresh
+                      </label>
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between mt-5">
+                    <p className="font-semibold text-lg text-black">
+                      Live preview
+                    </p>
+                    {isCardOpen === true ? (
+                      <IoMdArrowDropup
+                        onClick={() => setIsCardOpen(false)}
+                        size={32}
+                        className="cursor-pointer"
+                      />
+                    ) : (
+                      <IoMdArrowDropdown
+                        onClick={() => setIsCardOpen(true)}
+                        size={32}
+                        className="cursor-pointer"
+                      />
+                    )}
+                  </div>
+
+                  {isCardOpen && (
+                    <>
+                      <div className="mt-5 border-[1px] w-[350px] mx-auto p-4 rounded-lg">
+                        <div className="flex flex-row items-center gap-x-3">
+                          <Image
+                            width={80}
+                            height={80}
+                            className="rounded-md"
+                            src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                            alt="review image"
+                          />
+                          <p className="font-semibold text-black">Jhon Doe</p>
+                        </div>
+                        <div className="flex flex-col mt-3 gap-y-2">
+                          <ReactStars
+                            size={24}
+                            value={4}
+                            activeColor="#ffd700"
+                          />
+                          <Image
+                            width={1000}
+                            height={1000}
+                            className="rounded-md"
+                            src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                            alt="review image"
+                          />
+                          <p>
+                            In publishing and graphic design, Lorem ipsum is a
+                            placeholder text In publishing and graphic desi In
+                            publishing and graphic design, Lorem ipsum is a
+                            placeholder text commonly us
+                          </p>
+                          <p>Jul 14, 2024</p>
+                        </div>
+                      </div>
+                      <div className="flex flex-row gap-x-1 cursor-pointer justify-center items-center mt-5">
+                        <p className="font-semibold text-xl text-black">
+                          Testimonial
+                        </p>
+                        <Flame size={28} color="#235BD5" strokeWidth={2.25} />
+                      </div>
+                    </>
+                  )}
                 </div>
               ) : (
                 <>
@@ -288,6 +396,19 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
               )}
             </DialogDescription>
           </DialogHeader>
+          {steps && (
+            <DialogFooter className="w-[50%]  mt-20 ">
+              <DialogClose asChild>
+                <Button
+                  className="w-[50%] rounded border-[1px]"
+                  variant={"secondary"}
+                >
+                  Close
+                </Button>
+              </DialogClose>
+              <Button className="w-[50%] rounded">Copy</Button>
+            </DialogFooter>
+          )}
         </DialogContent>
       </Dialog>
 
