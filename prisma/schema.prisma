@@ -81,20 +81,23 @@ model Spaces {
   userId        String
   user          User          @relation(fields: [userId], references: [id])
   Testimonial   Testimonial[]
-  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 model Testimonial {
-  id         String  @id @default(cuid())
+  id         String   @id @default(cuid())
   message    String
   rating     Int
-  image      String
+  image      String?
   name       String
   email      String
-  photo      String
-  permission Boolean @default(false)
+  photo      String?
+  permission Boolean  @default(false)
   userId     String
-  user       User    @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
   spaceId    String
-  space      Spaces  @relation(fields: [spaceId], references: [id])
+  space      Spaces   @relation(fields: [spaceId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
