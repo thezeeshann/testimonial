@@ -268,7 +268,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                         <FormControl>
                           <Input
                             {...field}
-                            placeholder="Public URL is: testimonial.to/your-space"
+                            placeholder="Public URL is: localhost:3000/your-space"
                             className="bg-white"
                           />
                         </FormControl>

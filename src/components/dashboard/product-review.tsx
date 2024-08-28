@@ -34,6 +34,7 @@ import { useGetTestimonials } from "@/lib/hooks/useGetTestimonials";
 import GenerateScript from "./generate-script";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useGetSingleReview } from "@/lib/hooks/useGetSingleReview";
 
 type SingleReviewProp = {
   slug: string;
@@ -46,6 +47,9 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const [like, setLike] = useState(0);
   const [steps, setSteps] = useState(false);
   const { data } = useGetTestimonials();
+  const { data: singleSpace } = useGetSingleReview(slug);
+  console.log("single spacce",singleSpace);
+
   console.log(data);
 
   return (
@@ -264,7 +268,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                   <div className="flex flex-row items-center justify-center mt-3">
                     <p>Masonry - fixed</p>
                   </div>
-                  <GenerateScript />
+                  <GenerateScript theme="light" spaceName={singleSpace?.data?.name!} />
                   <div className="flex flex-col mt-5 gap-y-4">
                     <Button
                       variant={"secondary"}
@@ -309,7 +313,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                       </label>
                     </div>
                   </div>
-                  <div className="flex flex-row items-center justify-between mt-5">
+                  <div className="flex flex-row items-center justify-between mt-5 ">
                     <p className="font-semibold text-lg text-black">
                       Live preview
                     </p>
@@ -330,7 +334,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
 
                   {isCardOpen && (
                     <>
-                      <div className="mt-5 border-[1px] w-[350px] mx-auto p-4 rounded-lg">
+                      <div className="mt-5 border-[1px] w-[350px] mx-auto p-4 rounded-lg ">
                         <div className="flex flex-row items-center gap-x-3">
                           <Image
                             width={80}
@@ -397,7 +401,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
             </DialogDescription>
           </DialogHeader>
           {steps && (
-            <DialogFooter className="w-[50%]  mt-20 ">
+            <DialogFooter className="w-[50%]  mt-10 ">
               <DialogClose asChild>
                 <Button
                   className="w-[50%] rounded border-[1px]"

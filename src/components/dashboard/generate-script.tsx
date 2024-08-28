@@ -1,6 +1,11 @@
 import React from "react";
 
-const GenerateScript = () => {
+type GenerateScriptProp = {
+  spaceName: string;
+  theme: "light" | "dark"
+};
+
+const GenerateScript = ({ spaceName,theme }: GenerateScriptProp) => {
   return (
     <div className="mt-5 0">
       <pre className="text-[13px] p-[1rem] overflow-x-scroll  bg-[#1E1E1E] leading-3">
@@ -25,7 +30,7 @@ const GenerateScript = () => {
           <span>iframe id</span>
           <span className="text-[#D4D4D4]">=</span>
           <span className="text-[#CE9178]">
-            &apos;testimonialto-stuent-reviews-tag-all-light&apos;
+            &apos;testimonialto-{spaceName}-tag-all-{theme}&apos;
           </span>
           <span> src</span>
           <span className="text-[#D4D4D4]">=</span>
@@ -55,28 +60,24 @@ const GenerateScript = () => {
           <span className="text-[#CE9178]">&quot;text/javascript&quot;</span>
           <span className="text-[#D4D4D4]">&gt;</span>
           <span className="text-[#DCDCAA]">iFrameResize</span>
-          {/* <span className="text-[#D4D4D4]">(</span>
-            <span className="text-[#D4D4D4]">{</span> */}
+          <span className="text-[#D4D4D4]">{"("}</span>
+          <span className="text-[#D4D4D4]">{"{"}</span>
           <span>log</span>
           <span className="text-[#D4D4D4]">:</span>
-          <span className="text-[#569CD6]">false</span>
+          <span className="text-[#569CD6]"> false</span>
           <span className="text-[#D4D4D4]">,</span>
           <span className="text-[#D4D4D4]"></span>
-          <span className="text-[#569CD6]">false</span>
-          <span className="text-[#D4D4D4]">== $0</span>
+          <span> checkOrigin</span>
+          <span className="text-[#D4D4D4]">:</span>
+          <span className="text-[#569CD6]"> false</span>
+          <span className="text-[#D4D4D4]">{"}"}</span>
           <span className="text-[#D4D4D4]">,</span>
           <span className="text-[#CE9178]">
-          &apos;#testimonialto-stuent-reviews-tag-all-light&apos;
+            {" "}
+            &apos;#testimonialto-stuent-reviews-tag-all-light&apos;
           </span>
-          <span className="text-[#D4D4D4]"></span>
-          <span className="text-[#D4D4D4]">:</span>
-          <span className="text-[#569CD6]">false</span>
-          <span className="text-[#D4D4D4]">,</span>
-          <span className="text-[#D4D4D4]"></span>
-          <span className="text-[#D4D4D4]">:</span>
-          <span className="text-[#D4D4D4]">:</span>
-          <span className="text-[#D4D4D4]">:</span>
-          <span className="text-[#D4D4D4]">script</span>
+          <span className="text-[#D4D4D4]">{")"}</span>
+          <span className="text-[#D4D4D4]">;</span>
           <span className="text-[#D4D4D4]"></span>
           <span className="text-[#D4D4D4]"></span>
           <span className="text-[#D4D4D4]"></span>
