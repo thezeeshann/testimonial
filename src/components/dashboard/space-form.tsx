@@ -50,6 +50,8 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import React, { ChangeEvent } from "react";
 import Link from "next/link";
+import { UploadDropzone } from "@/app/api/uploadthing/uploadthing";
+import PulsatingDots from "../loading";
 
 type SpaceFormProp = {
   isOpen: boolean;
@@ -232,6 +234,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                 <CardFooter className="flex justify-between">
                   <Button className="bg-black dark:bg-[#25282C] flex flex-row gap-x-2 w-full">
                     {" "}
+                    Space logo
                     <span className="dark:text-neutral-200">
                       <Pencil size={20} />
                     </span>{" "}
@@ -284,15 +287,34 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel htmlFor="space">Space logo</FormLabel>
+
+                        <UploadButton
+                          endpoint="imageUploader"
+                          onClientUploadComplete={(res) => {
+                            form.setValue("logo", res[0].url);
+                            console.log("Files: ", res);
+                          }}
+                          onUploadError={(error: Error) => {
+                            form.setError("logo", {
+                              type: "validate",
+                              message: error.message,
+                            });
+                          }}
+                          // onUploadBegin={(e) => {
+                          //   field.onChange(e);
+                          //   handleImageChange(e);
+                          // }}
+                        />
+
                         <FormControl>
                           <Input
                             {...field}
-                            type="file"
+                            type="hidden"
                             className="bg-white"
-                            onChange={(e) => {
-                              field.onChange(e);
-                              handleImageChange(e);
-                            }}
+                            // onChange={(e) => {
+                            //   field.onChange(e);
+                            //   handleImageChange(e);
+                            // }}
                           />
                         </FormControl>
                         <FormDescription />
@@ -456,7 +478,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                     type="submit"
                     className=" w-full"
                   >
-                    Create new Space
+                    {isPending ? <PulsatingDots /> : "Create new Space"}
                   </Button>
                 </form>
               </Form>

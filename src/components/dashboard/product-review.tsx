@@ -35,6 +35,7 @@ import GenerateScript from "./generate-script";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useGetSingleReview } from "@/lib/hooks/useGetSingleReview";
+import spaceImage from "../../../public/no-message.18de8749.svg";
 
 type SingleReviewProp = {
   slug: string;
@@ -48,7 +49,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const [steps, setSteps] = useState(false);
   const { data } = useGetTestimonials();
   const { data: singleSpace } = useGetSingleReview(slug);
-  console.log("single spacce",singleSpace);
+  console.log("single spacce", singleSpace);
 
   console.log(data);
 
@@ -160,76 +161,94 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col  w-[70%] gap-y-6">
-            {data?.data?.map((testimonial) => (
-              <aside
-                key={testimonial.id}
-                className="  text-neutral-200 bg-neutral-800 cursor-pointer hover:bg-neutral-700 h-[420px] py-[16px] px-[24px]  rounded-lg"
-              >
-                <div className=" flex flex-row items-center justify-between">
-                  <div className="bg-[#DBEAFE] rounded-full w-[70px] flex items-center justify-center px-2 py-[3px]">
-                    <span className="text-blue-500 font-semibold text-center">
-                      Text
-                    </span>
-                  </div>
+          <div className="flex flex-col  w-[70%] gap-y-6 ">
+            {data?.data?.length! > 0 ? (
+              <>
+                {data?.data?.map((testimonial) => (
+                  <aside
+                    key={testimonial.id}
+                    className="  text-neutral-200 bg-neutral-800 cursor-pointer hover:bg-neutral-700 h-[420px] py-[16px] px-[24px]  rounded-lg"
+                  >
+                    <div className=" flex flex-row items-center justify-between">
+                      <div className="bg-[#DBEAFE] rounded-full w-[70px] flex items-center justify-center px-2 py-[3px]">
+                        <span className="text-blue-500 font-semibold text-center">
+                          Text
+                        </span>
+                      </div>
 
-                  {like === 1 ? (
-                    <FaHeart color="#ef4444" size={25} />
-                  ) : (
-                    <Heart
-                      onClick={() => setLike(like + 1)}
-                      size={25}
-                      color="#ef4444"
-                    />
-                  )}
-                </div>
-                <div className="flex flex-col gap-y-3">
-                  <ReactStars
-                    size={24}
-                    value={testimonial.rating}
-                    activeColor="#ffd700"
-                  />
-                  <p className="text-neutral-200">{testimonial.message}</p>
-                  <Image
-                    width={120}
-                    height={120}
-                    className="rounded-md"
-                    src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
-                    alt="review image"
-                  />
-                  <div className="flex flex-row items-center justify-between">
-                    <div className="">
-                      <span className="text-neutral-200 font-medium">Name</span>
-                      <div className="flex flex-row items-center gap-x-2 mt-2">
-                        <Image
-                          width={30}
-                          height={30}
-                          className="rounded-md"
-                          src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
-                          alt="review image"
+                      {like === 1 ? (
+                        <FaHeart color="#ef4444" size={25} />
+                      ) : (
+                        <Heart
+                          onClick={() => setLike(like + 1)}
+                          size={25}
+                          color="#ef4444"
                         />
+                      )}
+                    </div>
+                    <div className="flex flex-col gap-y-3">
+                      <ReactStars
+                        size={24}
+                        value={testimonial.rating}
+                        activeColor="#ffd700"
+                      />
+                      <p className="text-neutral-200">{testimonial.message}</p>
+                      <Image
+                        width={120}
+                        height={120}
+                        className="rounded-md"
+                        src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                        alt="review image"
+                      />
+                      <div className="flex flex-row items-center justify-between">
+                        <div className="">
+                          <span className="text-neutral-200 font-medium">
+                            Name
+                          </span>
+                          <div className="flex flex-row items-center gap-x-2 mt-2">
+                            <Image
+                              width={30}
+                              height={30}
+                              className="rounded-md"
+                              src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                              alt="review image"
+                            />
+                            <p className="text-neutral-200 font-medium">
+                              {testimonial.name}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-neutral-200 font-medium">
+                          <span>Email</span>
+                          <p>{testimonial.email}</p>
+                        </div>
+                        <div></div>
+                      </div>
+                      <div>
+                        <span className="text-neutral-200 font-medium">
+                          Submitted At
+                        </span>
                         <p className="text-neutral-200 font-medium">
-                          {testimonial.name}
+                          Jul 14,2024, 8:47:01 PM
                         </p>
                       </div>
                     </div>
-                    <div className="text-neutral-200 font-medium">
-                      <span>Email</span>
-                      <p>{testimonial.email}</p>
-                    </div>
-                    <div></div>
-                  </div>
-                  <div>
-                    <span className="text-neutral-200 font-medium">
-                      Submitted At
-                    </span>
-                    <p className="text-neutral-200 font-medium">
-                      Jul 14,2024, 8:47:01 PM
-                    </p>
-                  </div>
-                </div>
-              </aside>
-            ))}
+                  </aside>
+                ))}
+              </>
+            ) : (
+              <div className="flex flex-col items-center gap-y-5 mt-24  ">
+                <Image
+                  src={spaceImage}
+                  width={250}
+                  height={250}
+                  alt="space image"
+                />
+                <p className="text-neutral-400 text-lg">
+                No testimonial yet
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -268,7 +287,10 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                   <div className="flex flex-row items-center justify-center mt-3">
                     <p>Masonry - fixed</p>
                   </div>
-                  <GenerateScript theme="light" spaceName={singleSpace?.data?.name!} />
+                  <GenerateScript
+                    theme="light"
+                    spaceName={singleSpace?.data?.name!}
+                  />
                   <div className="flex flex-col mt-5 gap-y-4">
                     <Button
                       variant={"secondary"}
