@@ -35,10 +35,8 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { testimonials } from "@/actions/testimonial";
 import { useState } from "react";
-import {
-  UploadButton,
-  UploadDropzone,
-} from "@/app/api/uploadthing/uploadthing";
+import { UploadButton } from "@/app/api/uploadthing/uploadthing";
+import PulsatingDots from "../loading";
 
 type TestimonialFormProsp = {
   isOpen: boolean;
@@ -48,6 +46,7 @@ type TestimonialFormProsp = {
 
 const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
   const [formSuccess, setFormSucess] = useState(false);
+
   const form = useForm<z.infer<typeof testimonialSchema>>({
     resolver: zodResolver(testimonialSchema),
     defaultValues: {
@@ -55,15 +54,15 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
       message: "",
       email: "",
       image: "",
-      rating: 0,
+      rating: 5,
       photo: "",
       permission: false,
+      spaceId: data.data.id,
     },
   });
 
   const { mutate, isPending } = useMutation({
     mutationFn: testimonials,
-
     onSuccess: (data) => {
       if (data?.error) {
         return toast.error(`${data.error}`);
@@ -76,14 +75,13 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
         toast.success(`${data.success}`);
       }
     },
-
     onError: () => {
       toast.error("Somethig went wrong");
     },
   });
 
   const onSubmit = (values: z.infer<typeof testimonialSchema>) => {
-    mutate({ ...values, spaceId: data.data.id });
+    mutate(values);
     console.log(values, "testimonials form response");
   };
 
@@ -145,187 +143,184 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               {/* <div className="flex flex-col text-neutral-500 mt-3"> */}
-                <div className="text-lg">
-                  <FormField
-                    control={form.control}
-                    name="rating"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <ReactStars
-                            value={field.value}
-                            onChange={field.onChange}
-                            count={5}
-                            size={24}
-                            activeColor="#ffd700"
-                          />
-                        </FormControl>
-                        <FormDescription />
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <Textarea
-                          rows={4}
-                          {...field}
-                          placeholder="Type your message here."
-                          className="bg-white"
-                        />
-                      </FormControl>
-                      <FormDescription />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Label htmlFor="title">Attach Image</Label>
-                      <UploadDropzone
-                        endpoint="imageUploader"
-                        onClientUploadComplete={(res) => {
-                          // Do something with the response
-                          console.log("Files: ", res);
-                          alert("Upload Completed Image");
-                        }}
-                        onUploadBegin={(name) => {
-                          // Do something once upload begins
-                          console.log("Uploading: ", name);
-                        }}
-                        onUploadError={(error: Error) => {
-                          alert(`ERROR! ${error.message}`);
-                        }}
+              {/* <div className="text-lg">
+                </div> */}
+              <FormField
+                control={form.control}
+                name="rating"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <ReactStars
+                        value={field.value}
+                        onChange={field.onChange}
+                        count={5}
+                        size={24}
+                        activeColor="#ffd700"
                       />
-                      <FormControl>
-                        <Input
-                          type="hidden"
-                          {...field}
-                          placeholder="would you like to give a shoutout of xyz?"
-                          className="bg-white"
-                        />
-                      </FormControl>
-                      <FormDescription />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Label htmlFor="title">
-                        Your Name <span className="text-red-500">*</span>
-                      </Label>
-                      <FormControl>
-                        <Input {...field} className="bg-white" />
-                      </FormControl>
-                      <FormDescription />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Label htmlFor="title">
-                        Your Email <span className="text-red-500">*</span>
-                      </Label>
-                      <FormControl>
-                        <Input {...field} type="email" className="bg-white" />
-                      </FormControl>
-                      <FormDescription />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="photo"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Label htmlFor="title">Upload Your Photo</Label>
-
-                      <UploadDropzone
-                        endpoint="imageUploader"
-                        onClientUploadComplete={(res) => {
-                          // Do something with the response
-                          console.log("Files: ", res);
-                          alert("Upload Completed Photo");
-                        }}
-                        onUploadBegin={(name) => {
-                          // Do something once upload begins
-                          console.log("Uploading: ", name);
-                        }}
-                        onUploadError={(error: Error) => {
-                          alert(`ERROR! ${error.message}`);
-                        }}
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                        rows={4}
+                        {...field}
+                        placeholder="Type your message here."
+                        className="bg-white"
                       />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label htmlFor="title">Attach Image</Label>
+                    <UploadButton
+                    
+                    appearance={{
+                      container: {
+                        display: "flex",
+                        alignItems: "flex-start",
+                        marginTop: "0.5rem",
+                      },
+                    }}
 
-                      <FormControl>
-                        <Input
-                          type="hidden"
-                          {...field}
-                          placeholder="would you like to give a shoutout of xyz?"
-                          className="bg-white"
-                        />
-                      </FormControl>
-                      <FormDescription />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="terms" {...form.register("permission")} />
-                  <label
-                    htmlFor="terms"
-                    className="text-xs text-neutral-400   peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    I give permission to use this testimonial across social
-                    channels and other marketing efforts
-                  </label>
-                </div>
+                      endpoint="imageUploader"
+                      onClientUploadComplete={(res) => {
+                        form.setValue("image", res[0].url);
+                        console.log("Files: ", res);
+                      }}
+                      onUploadError={(error: Error) => {
+                        form.setError("image", {
+                          type: "validate",
+                          message: error.message,
+                        });
+                      }}
+                    />
+                    <FormControl>
+                      <Input
+                        type="hidden"
+                        {...field}
+                        placeholder="would you like to give a shoutout of xyz?"
+                        className="bg-white"
+                      />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label htmlFor="title">
+                      Your Name <span className="text-red-500">*</span>
+                    </Label>
+                    <FormControl>
+                      <Input {...field} className="bg-white" />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label htmlFor="title">
+                      Your Email <span className="text-red-500">*</span>
+                    </Label>
+                    <FormControl>
+                      <Input {...field} type="email" className="bg-white" />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="photo"
+                render={({ field }) => (
+                  <FormItem>
+                    <Label htmlFor="title">Upload Your Photo</Label>
 
-                <Button
-                    disabled={isPending}
-                    type="submit"
-                    className=" w-full"
-                  >
-                    Create new Space
-                  </Button>
+                    <UploadButton
+                      appearance={{
+                        container: {
+                          display: "flex",
+                          alignItems: "flex-start",
+                          marginTop: "0.5rem",
+                        },
+                      }}
+                      endpoint="imageUploader"
+                      onClientUploadComplete={(res) => {
+                        form.setValue("photo", res[0].url);
+                        console.log("Files: ", res);
+                      }}
+                      onUploadError={(error: Error) => {
+                        form.setError("photo", {
+                          type: "validate",
+                          message: error.message,
+                        });
+                      }}
+                    />
 
+                    <FormControl>
+                      <Input
+                        type="hidden"
+                        {...field}
+                        placeholder="would you like to give a shoutout of xyz?"
+                        className="bg-white"
+                      />
+                    </FormControl>
+                    <FormDescription />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex items-center space-x-2">
+                <Checkbox id="terms" {...form.register("permission")} />
+                <label
+                  htmlFor="terms"
+                  className="text-xs text-neutral-400   peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  I give permission to use this testimonial across social
+                  channels and other marketing efforts
+                </label>
+              </div>
               {/* </div> */}
 
-              {/* <DialogFooter>
-                <div className="space-x-2">
-                  <DialogClose asChild>
-                    <Button
-                      variant={"secondary"}
-                      className="rounded border-[1px]"
-                    >
-                      Cancel
-                    </Button>
-                  </DialogClose>
+              <div className="space-x-2 mt-3 flex justify-end items-end">
+                <DialogClose asChild>
                   <Button
-                    disabled={isPending}
-                    type="submit"
-                    className="rounded"
+                    variant={"secondary"}
+                    className="rounded border-[1px]"
                   >
-                    Send
+                    Cancel
                   </Button>
-                </div>
-              </DialogFooter> */}
+                </DialogClose>
+                <Button disabled={isPending} type="submit" className="rounded">
+                  {isPending ? <PulsatingDots /> : "Send"}
+                </Button>
+              </div>
             </form>
           </Form>
         </DialogContent>

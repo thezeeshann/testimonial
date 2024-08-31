@@ -234,7 +234,6 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                 <CardFooter className="flex justify-between">
                   <Button className="bg-black dark:bg-[#25282C] flex flex-row gap-x-2 w-full">
                     {" "}
-                    Space logo
                     <span className="dark:text-neutral-200">
                       <Pencil size={20} />
                     </span>{" "}
@@ -289,6 +288,13 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                         <FormLabel htmlFor="space">Space logo</FormLabel>
 
                         <UploadButton
+                          appearance={{
+                            container: {
+                              display: "flex",
+                              alignItems: "flex-start",
+                              marginTop: "0.5rem",
+                            },
+                          }}
                           endpoint="imageUploader"
                           onClientUploadComplete={(res) => {
                             form.setValue("logo", res[0].url);

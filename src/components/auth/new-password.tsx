@@ -36,7 +36,7 @@ const NewPassword = () => {
 
   const { isPending, mutate } = useMutation({
     mutationFn: newPassword,
-    onError: (error) => {
+    onError: () => {
       toast.error("Something went wrong");
     },
 

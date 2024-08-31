@@ -36,6 +36,7 @@ import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useGetSingleReview } from "@/lib/hooks/useGetSingleReview";
 import spaceImage from "../../../public/no-message.18de8749.svg";
+import PulsatingDots from "../loading";
 
 type SingleReviewProp = {
   slug: string;
@@ -47,11 +48,16 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [like, setLike] = useState(0);
   const [steps, setSteps] = useState(false);
-  const { data } = useGetTestimonials();
+  const { data, isLoading } = useGetTestimonials();
   const { data: singleSpace } = useGetSingleReview(slug);
-  console.log("single spacce", singleSpace);
 
-  console.log(data);
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-10">
+        <PulsatingDots />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -244,9 +250,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                   height={250}
                   alt="space image"
                 />
-                <p className="text-neutral-400 text-lg">
-                No testimonial yet
-                </p>
+                <p className="text-neutral-400 text-lg">No testimonial yet</p>
               </div>
             )}
           </div>
