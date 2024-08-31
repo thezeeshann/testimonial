@@ -8,9 +8,7 @@ import { z } from "zod";
 export const testimonials = async (
   values: z.infer<typeof testimonialSchema>
 ) => {
-  console.log("called1")
   try {
-    console.log("called")
     const validatedFields = testimonialSchema.safeParse(values);
     if (!validatedFields.success) {
       return {
@@ -27,11 +25,18 @@ export const testimonials = async (
     const { email, message, name, permission, rating, image, photo, spaceId } =
       validatedFields.data;
 
-      if(!email || !message || !name || !permission || !image || !photo || !spaceId){
-        return {
-          error:"field is missing"
-        }
-      }
+    if (
+      !email ||
+      !message ||
+      !name ||
+      spaceId === "" ||
+      !rating ||
+      !permission
+    ) {
+      return {
+        error: "Required field is missing",
+      };
+    }
 
     await db.testimonial.create({
       data: {
