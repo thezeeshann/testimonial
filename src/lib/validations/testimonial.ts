@@ -10,9 +10,9 @@ export const testimonialSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address",
   }),
-  image: z.string(),
+  image: z.string().optional(),
   rating: z.number().min(1).max(5),
-  photo: z.string(),
+  photo: z.string().optional(),
   permission: z.boolean().default(false),
   spaceId: z.string(),
 });
