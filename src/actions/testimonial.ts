@@ -25,29 +25,21 @@ export const testimonials = async (
     const { email, message, name, permission, rating, image, photo, spaceId } =
       validatedFields.data;
 
-    if (
-      !email ||
-      !message ||
-      !name ||
-      spaceId === "" ||
-      !rating ||
-      !permission
-    ) {
+    if (!email || !message || !name || !rating || spaceId === "") {
       return {
-        error: "Required field is missing",
+        error: "field is missing",
       };
     }
 
     await db.testimonial.create({
       data: {
-        name,
-        message,
         email,
+        message,
+        name,
         rating,
         image,
         photo,
         permission,
-        userId: user.id,
         spaceId,
       },
     });

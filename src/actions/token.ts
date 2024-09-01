@@ -41,11 +41,9 @@ export const generateEmailVerificationToken = async (email: string) => {
 
 export const verifiyEmailToken = async (token: string) => {
   const existingToken = await getVerficatonTokenByEmail(token);
-  if (!existingToken) {
-    return {
-      error: "Token not found",
-    };
-  }
+  
+  if (!existingToken) return null;
+
   const hashExpired = new Date(existingToken.expires) < new Date();
   if (hashExpired) return { error: "Token has expired" };
 
