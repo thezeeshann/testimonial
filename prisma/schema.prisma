@@ -24,7 +24,6 @@ model User {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   Spaces        Spaces[]
-  Testimonial   Testimonial[]
 }
 
 model Account {
@@ -94,8 +93,6 @@ model Testimonial {
   email      String
   photo      String?
   permission Boolean  @default(false)
-  userId     String
-  user       User     @relation(fields: [userId], references: [id])
   spaceId    String
   space      Spaces   @relation(fields: [spaceId], references: [id])
   createdAt  DateTime @default(now())
