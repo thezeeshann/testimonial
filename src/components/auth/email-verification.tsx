@@ -16,11 +16,11 @@ const EmailVerification = () => {
       toast.error("No token found");
     }
     verifiyEmailToken(token!).then((data) => {
-      if (data.error) {
-        toast.error(data.error);
+      if (data!.error) {
+        toast.error(data!.error);
       }
-      if (data.success) {
-        toast.success(data.success);
+      if (data!.success) {
+        toast.success(data!.success);
         router.push("/signin");
       }
     });

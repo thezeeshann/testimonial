@@ -128,7 +128,7 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
                 width={70}
                 height={70}
                 className="rounded-md mt-2"
-                src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                src={data?.data?.logo}
                 alt="review image"
               />
             </DialogDescription>
@@ -143,8 +143,6 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               {/* <div className="flex flex-col text-neutral-500 mt-3"> */}
-              {/* <div className="text-lg">
-                </div> */}
               <FormField
                 control={form.control}
                 name="rating"
@@ -189,15 +187,13 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
                   <FormItem>
                     <Label htmlFor="title">Attach Image</Label>
                     <UploadButton
-                    
-                    appearance={{
-                      container: {
-                        display: "flex",
-                        alignItems: "flex-start",
-                        marginTop: "0.5rem",
-                      },
-                    }}
-
+                      appearance={{
+                        container: {
+                          display: "flex",
+                          alignItems: "flex-start",
+                          marginTop: "0.5rem",
+                        },
+                      }}
                       endpoint="imageUploader"
                       onClientUploadComplete={(res) => {
                         form.setValue("image", res[0].url);
@@ -296,18 +292,28 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
                   </FormItem>
                 )}
               />
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" {...form.register("permission")} />
-                <label
-                  htmlFor="terms"
-                  className="text-xs text-neutral-400   peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  I give permission to use this testimonial across social
-                  channels and other marketing efforts
-                </label>
-              </div>
-              {/* </div> */}
-
+              <FormField
+                control={form.control}
+                name="permission"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <div className="flex flex-row items-start gap-x-3 ">
+                        <Checkbox
+                          id="terms"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                        <p className="text-xs text-neutral-400 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                          I give permission to use this testimonial across
+                          social channels and other marketing efforts
+                        </p>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <div className="space-x-2 mt-3 flex justify-end items-end">
                 <DialogClose asChild>
                   <Button

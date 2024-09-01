@@ -15,7 +15,6 @@ import spaceImage from "../../../public/no-message.18de8749.svg";
 const CreateSpace = ({ user }: Session) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading } = useGetSpace(user.id);
-  console.log(data?.data);
 
   if (isLoading) {
     return (
@@ -43,7 +42,10 @@ const CreateSpace = ({ user }: Session) => {
             <Link key={space?.id} href={`/dashboard/products/${space?.name}`}>
               <div className="bg-[#25282C] cursor-pointer w-[310px] h-[80px] border-2 border-neutral-700 my-16 rounded flex ">
                 <Image
-                  src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                  src={
+                    space.logo ||
+                    "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                  }
                   width={80}
                   height={80}
                   alt="space image"

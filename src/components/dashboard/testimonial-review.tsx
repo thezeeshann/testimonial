@@ -30,7 +30,10 @@ const TestimonialReview = ({ slug }: SpaceReviewProps) => {
           width={120}
           height={120}
           className="rounded-md"
-          src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+          src={
+            data?.data?.logo ||
+            "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+          }
           alt="review image"
         />
         <p className="text-neutral-200 font-extrabold text-5xl">

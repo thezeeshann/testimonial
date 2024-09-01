@@ -49,7 +49,9 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const [like, setLike] = useState(0);
   const [steps, setSteps] = useState(false);
   const { data, isLoading } = useGetTestimonials();
+  console.log(data, "testimonial data");
   const { data: singleSpace } = useGetSingleReview(slug);
+  console.log(singleSpace);
 
   if (isLoading) {
     return (
@@ -70,7 +72,10 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                 width={80}
                 height={80}
                 className="rounded-md"
-                src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                src={
+                  singleSpace?.data?.logo ||
+                  "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                }
                 alt="review image"
               />
               <div>
@@ -89,7 +94,10 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
               </div>
             </div>
             <div className="">
-              <Button className="flex text-black flex-row gap-x-2 bg-white rounded-sm">
+              <Button
+                variant={"secondary"}
+                className="flex text-black flex-row gap-x-2 rounded-sm"
+              >
                 {" "}
                 <Pencil size={20} /> Edit space
               </Button>
@@ -173,7 +181,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                 {data?.data?.map((testimonial) => (
                   <aside
                     key={testimonial.id}
-                    className="  text-neutral-200 bg-neutral-800 cursor-pointer hover:bg-neutral-700 h-[420px] py-[16px] px-[24px]  rounded-lg"
+                    className="  text-neutral-200 bg-neutral-800 cursor-pointer hover:bg-neutral-700 h-[450px] py-[16px] px-[24px]  rounded-lg"
                   >
                     <div className=" flex flex-row items-center justify-between">
                       <div className="bg-[#DBEAFE] rounded-full w-[70px] flex items-center justify-center px-2 py-[3px]">
@@ -203,7 +211,10 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                         width={120}
                         height={120}
                         className="rounded-md"
-                        src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                        src={
+                          testimonial.image! ||
+                          "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                        }
                         alt="review image"
                       />
                       <div className="flex flex-row items-center justify-between">
@@ -216,7 +227,10 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                               width={30}
                               height={30}
                               className="rounded-md"
-                              src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                              src={
+                                testimonial.photo! ||
+                                "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                              }
                               alt="review image"
                             />
                             <p className="text-neutral-200 font-medium">
@@ -235,7 +249,14 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                           Submitted At
                         </span>
                         <p className="text-neutral-200 font-medium">
-                          Jul 14,2024, 8:47:01 PM
+                          {new Date(testimonial.createdAt).toLocaleDateString(
+                            "en-Us",
+                            {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
                         </p>
                       </div>
                     </div>
