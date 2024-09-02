@@ -11,6 +11,7 @@ import {
   Copy,
   MoveLeft,
   Flame,
+  Trash2,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
@@ -37,6 +38,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useGetSingleReview } from "@/lib/hooks/useGetSingleReview";
 import spaceImage from "../../../public/no-message.18de8749.svg";
 import PulsatingDots from "../loading";
+import { deleteTestimonials } from "@/actions/testimonial";
+import { toast } from "sonner";
 
 type SingleReviewProp = {
   slug: string;
@@ -46,12 +49,17 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWallOpen, setIsWallOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
   const [like, setLike] = useState(0);
   const [steps, setSteps] = useState(false);
   const { data, isLoading } = useGetTestimonials();
-  console.log(data, "testimonial data");
   const { data: singleSpace } = useGetSingleReview(slug);
-  console.log(singleSpace);
+
+  const handleDeleteTestimonial = async (testimonialId: string) => {
+    const response = await deleteTestimonials(testimonialId);
+    toast.success("Testimonial deleted.");
+  };
 
   if (isLoading) {
     return (
@@ -181,7 +189,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                 {data?.data?.map((testimonial) => (
                   <aside
                     key={testimonial.id}
-                    className="  text-neutral-200 bg-neutral-800 cursor-pointer hover:bg-neutral-700 h-[450px] py-[16px] px-[24px]  rounded-lg"
+                    className="text-neutral-200 bg-neutral-800  hover:bg-neutral-700 h-[450px] py-[16px] px-[24px]  rounded-lg"
                   >
                     <div className=" flex flex-row items-center justify-between">
                       <div className="bg-[#DBEAFE] rounded-full w-[70px] flex items-center justify-center px-2 py-[3px]">
@@ -191,9 +199,14 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                       </div>
 
                       {like === 1 ? (
-                        <FaHeart color="#ef4444" size={25} />
+                        <FaHeart
+                          className="cursor-pointer"
+                          color="#ef4444"
+                          size={25}
+                        />
                       ) : (
                         <Heart
+                          className="cursor-pointer"
                           onClick={() => setLike(like + 1)}
                           size={25}
                           color="#ef4444"
@@ -244,20 +257,34 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                         </div>
                         <div></div>
                       </div>
-                      <div>
-                        <span className="text-neutral-200 font-medium">
-                          Submitted At
+                      <div className="flex flex-row items-center justify-between ">
+                        <div>
+                          <span className="text-neutral-200 font-medium">
+                            Submitted At
+                          </span>
+                          <p className="text-neutral-200 font-medium">
+                            {new Date(testimonial.createdAt).toLocaleDateString(
+                              "en-Us",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              }
+                            )}
+                          </p>
+                        </div>
+                        <span>
+                          <Trash2
+                            onClick={() => {
+                              setIsDeleteOpen(true);
+                              setDeleteId(testimonial.id);
+                            }}
+                            // onClick={async () =>
+                            //   await deleteTestimonials(testimonial.id)
+                            // }
+                            className="cursor-pointer"
+                          />
                         </span>
-                        <p className="text-neutral-200 font-medium">
-                          {new Date(testimonial.createdAt).toLocaleDateString(
-                            "en-Us",
-                            {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            }
-                          )}
-                        </p>
                       </div>
                     </div>
                   </aside>
@@ -489,6 +516,26 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                 <span>Copy Code</span>
               </Button>
             </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Delete this testimonial</DialogTitle>
+            <DialogDescription>
+              Once confirmed, this testimonial will be permanently removed.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              onClick={() => handleDeleteTestimonial(deleteId)}
+              variant={"destructive"}
+              type="submit"
+            >
+              Confirm
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

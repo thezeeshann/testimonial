@@ -11,10 +11,12 @@ import Link from "next/link";
 import { Session } from "next-auth";
 import { useGetSpace } from "@/lib/hooks/useGetReview";
 import spaceImage from "../../../public/no-message.18de8749.svg";
+import { useGetTestimonials } from "@/lib/hooks/useGetTestimonials";
 
 const CreateSpace = ({ user }: Session) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading } = useGetSpace(user.id);
+  const { data: testimonials } = useGetTestimonials();
 
   if (isLoading) {
     return (
@@ -54,7 +56,9 @@ const CreateSpace = ({ user }: Session) => {
                 <div className="text-neutral-200 flex flex-row items-center justify-between w-full p-3 hover:bg-[#33363b] ">
                   <div>
                     <p className="font-semibold">{space?.name}</p>
-                    <span className="text-sm text-neutral-400">Text: 1</span>
+                    <span className="text-sm text-neutral-400">
+                      Text: {testimonials?.data?.length}
+                    </span>
                   </div>
                   <IoMdSettings
                     size={22}
