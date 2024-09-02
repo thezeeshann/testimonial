@@ -72,3 +72,28 @@ export const getTestimonials = async () => {
     };
   }
 };
+
+export const deleteTestimonials = async (testimonialId: string) => {
+  try {
+    const user = await currentUser();
+    if (!user) {
+      return {
+        error: "Unauthorized",
+      };
+    }
+
+    await db.testimonial.delete({
+      where: {
+        id: testimonialId,
+      },
+    });
+
+    return {
+      success: "Testimonial deleted.",
+    };
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+};
