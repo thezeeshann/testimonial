@@ -15,12 +15,6 @@ export const testimonials = async (
         error: "Invalid fields!",
       };
     }
-    const user = await currentUser();
-    if (!user) {
-      return {
-        error: "Unauthorized",
-      };
-    }
 
     const { email, message, name, permission, rating, image, photo, spaceId } =
       validatedFields.data;
