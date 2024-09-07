@@ -1,5 +1,6 @@
 
-![Screenshot 2024-07-07 180819](https://github.com/thezeeshann/testimonial/assets/88139550/93760072-f452-46b0-8fff-3fa604cbe67a)
+![screencapture-localhost-3000-2024-09-07-22_13_57](https://github.com/user-attachments/assets/f2fdd42f-1d04-4a04-ba7c-de1f5d6142c6)
+
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
