@@ -18,7 +18,6 @@ import Image from "next/image";
 import ReactStars from "react-rating-stars-component";
 import { FaHeart } from "react-icons/fa";
 import Link from "next/link";
-import { inboxs } from "@/lib/data";
 import {
   Dialog,
   DialogContent,
@@ -29,7 +28,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TestimonialReview from "./testimonial-review";
 import { useGetTestimonials } from "@/lib/hooks/useGetTestimonials";
 import GenerateScript from "./generate-script";
@@ -41,6 +40,8 @@ import PulsatingDots from "../loading";
 import { deleteTestimonials } from "@/actions/testimonial";
 import { toast } from "sonner";
 import DeleteTestimonialsModal from "../modals/delete-testimonial";
+import ReviewSidebar from "./_components/review-sidebar";
+import TestimonialCard from "./_components/testimonial-card";
 
 type SingleReviewProp = {
   slug: string;
@@ -54,9 +55,9 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const [deleteId, setDeleteId] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [steps, setSteps] = useState(false);
-  const [isTestimonialCradOpen, setIsTestimonialCradOpen] = useState(false);
   const { data, isLoading } = useGetTestimonials();
   const { data: singleSpace, refetch } = useGetSingleReview(slug);
+  const [isTestimonialCradOpen, setIsTestimonialCradOpen] = useState(false);
 
   const handleDeleteTestimonial = async (testimonialId: string) => {
     const response = await deleteTestimonials(testimonialId);
@@ -118,341 +119,36 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
           <hr className=" w-full border-neutral-800" />
         </div>
         <div className="flex flex-row justify-between gap-x-8 mt-5 w-full">
-          <div className=" text-neutral-200 w-[30%] flex flex-col gap-y-6 ">
-            <div className="flex flex-col gap-y-2">
-              <p className="text-neutral-400 font-bold">INBOX</p>
-
-              <div
-                onClick={() => setIsTestimonialCradOpen(false)}
-                className="flex flex-row gap-x-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md p-[2px]"
-              >
-                <span>
-                  <Dot color={"#a855f7"} size={32} />
-                </span>
-                <p className="text-neutral-200 font-medium">Text</p>
-              </div>
-              <div
-                onClick={() => setIsTestimonialCradOpen(true)}
-                className="flex flex-row gap-x-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md p-[2px]"
-              >
-                <span>
-                  <Dot color={"#ef4444"} size={32} />
-                </span>
-                <p className="text-neutral-200 font-medium">Like</p>
-              </div>
-            </div>
-            <div className="flex flex-col gap-y-1">
-              <p className="text-neutral-400 font-bold">SPACE SETTINGS</p>
-              <div
-                onClick={() => setIsWallOpen(true)}
-                className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]"
-              >
-                <span>
-                  <Heart size={18} />
-                </span>
-                <p className="text-neutral-200 font-medium">Wall of Love</p>
-              </div>
-              <div className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]">
-                <span>
-                  {" "}
-                  <CodeXml size={18} />
-                </span>
-                <p className="text-neutral-200 font-medium">
-                  Single testimonial
-                </p>
-              </div>
-              <div
-                onClick={() => setIsOpen(true)}
-                className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]"
-              >
-                <span>
-                  <ArchiveRestore size={18} />
-                </span>
-                <p className="text-neutral-200 font-medium">
-                  Collecting widget
-                </p>
-              </div>
-              <Link
-                href={`http://localhost:3000/dashboard/${slug}`}
-                target="_blank"
-              >
-                <div className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]">
-                  <span>
-                    {" "}
-                    <LinkIcon size={18} />
-                  </span>
-                  <p className="text-neutral-200 font-medium">
-                    Public landing page
+          <ReviewSidebar
+            slug={slug}
+            setIsTestimonialCradOpen={setIsTestimonialCradOpen}
+            setIsWallOpen={setIsWallOpen}
+            setIsOpen={setIsOpen}
+          />
+          <div className="flex flex-col w-[70%] gap-y-6 ">
+            {isTestimonialCradOpen === true && isLiked === false ? (
+              <>
+                <div className="flex flex-col items-center gap-y-5  ">
+                  <Image
+                    src={spaceImage}
+                    width={280}
+                    height={280}
+                    alt="space image"
+                  />
+                  <p className="text-neutral-400 text-lg">
+                    No liked testimonial
                   </p>
                 </div>
-              </Link>
-              <div className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]">
-                <span>
-                  {" "}
-                  <FilePenLine size={18} />
-                </span>
-                <p className="text-neutral-200 font-medium">Edit the space</p>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col w-[70%] gap-y-6 ">
-            {isTestimonialCradOpen === true ? (
-              <>
-                {isTestimonialCradOpen === true ? (
-                  <>
-                    {data?.data?.map((testimonial) => (
-                      <aside
-                        key={testimonial.id}
-                        className="text-neutral-200 bg-neutral-800  hover:bg-neutral-700 h-[450px] py-[16px] px-[24px]  rounded-lg"
-                      >
-                        <div className=" flex flex-row items-center justify-between">
-                          <div className="bg-[#DBEAFE] rounded-full w-[70px] flex items-center justify-center px-2 py-[3px]">
-                            <span className="text-blue-500 font-semibold text-center">
-                              Text
-                            </span>
-                          </div>
-
-                          {isLiked === true ? (
-                            <FaHeart
-                              className="cursor-pointer"
-                              onClick={() => {
-                                setIsLiked(false);
-                                toast.success("Remove from wall of the love ");
-                              }}
-                              color="#ef4444"
-                              size={25}
-                            />
-                          ) : (
-                            <Heart
-                              className="cursor-pointer"
-                              onClick={() => {
-                                setIsLiked(true);
-                                localStorage.setItem(
-                                  "like",
-                                  "true"
-                                );
-                                toast.success("Added to the wall of love");
-                              }}
-                              size={25}
-                              color="#ef4444"
-                            />
-                          )}
-                        </div>
-                        <div className="flex flex-col gap-y-3">
-                          <ReactStars
-                            size={24}
-                            value={testimonial.rating}
-                            activeColor="#ffd700"
-                          />
-                          <p className="text-neutral-200">
-                            {testimonial.message}
-                          </p>
-                          <Image
-                            width={120}
-                            height={120}
-                            className="rounded-md"
-                            src={
-                              testimonial.image! ||
-                              "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
-                            }
-                            alt="review image"
-                          />
-                          <div className="flex flex-row items-center justify-between">
-                            <div className="">
-                              <span className="text-neutral-200 font-medium">
-                                Name
-                              </span>
-                              <div className="flex flex-row items-center gap-x-2 mt-2">
-                                <Image
-                                  width={30}
-                                  height={30}
-                                  className="rounded-md"
-                                  src={
-                                    testimonial.photo! ||
-                                    "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
-                                  }
-                                  alt="review image"
-                                />
-                                <p className="text-neutral-200 font-medium">
-                                  {testimonial.name}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="text-neutral-200 font-medium">
-                              <span>Email</span>
-                              <p>{testimonial.email}</p>
-                            </div>
-                            <div></div>
-                          </div>
-                          <div className="flex flex-row items-center justify-between ">
-                            <div>
-                              <span className="text-neutral-200 font-medium">
-                                Submitted At
-                              </span>
-                              <p className="text-neutral-200 font-medium">
-                                {new Date(
-                                  testimonial.createdAt
-                                ).toLocaleDateString("en-Us", {
-                                  day: "2-digit",
-                                  month: "short",
-                                  year: "numeric",
-                                })}
-                              </p>
-                            </div>
-                            <span>
-                              <Trash2
-                                onClick={() => {
-                                  setIsDeleteOpen(true);
-                                  setDeleteId(testimonial.id);
-                                }}
-                                className="cursor-pointer"
-                              />
-                            </span>
-                          </div>
-                        </div>
-                      </aside>
-                    ))}
-                  </>
-                ) : (
-                  <div className="flex flex-col items-center gap-y-5  ">
-                    <Image
-                      src={spaceImage}
-                      width={280}
-                      height={280}
-                      alt="space image"
-                    />
-                    <p className="text-neutral-400 text-lg">
-                      No liked testimonial
-                    </p>
-                  </div>
-                )}
               </>
             ) : (
               <>
-                {data?.data?.length! > 0 ? (
-                  <>
-                    {data?.data?.map((testimonial) => (
-                      <aside
-                        key={testimonial.id}
-                        className="text-neutral-200 bg-neutral-800  hover:bg-neutral-700 h-[450px] py-[16px] px-[24px]  rounded-lg"
-                      >
-                        <div className=" flex flex-row items-center justify-between">
-                          <div className="bg-[#DBEAFE] rounded-full w-[70px] flex items-center justify-center px-2 py-[3px]">
-                            <span className="text-blue-500 font-semibold text-center">
-                              Text
-                            </span>
-                          </div>
-
-                          {isLiked === true ? (
-                            <FaHeart
-                              className="cursor-pointer"
-                              onClick={() => {
-                                setIsLiked(false);
-                                toast.success("Remove from wall of the love ");
-                              }}
-                              color="#ef4444"
-                              size={25}
-                            />
-                          ) : (
-                            <Heart
-                              className="cursor-pointer"
-                              onClick={() => {
-                                setIsLiked(true);
-                                toast.success("Added to the wall of love");
-                              }}
-                              size={25}
-                              color="#ef4444"
-                            />
-                          )}
-                        </div>
-                        <div className="flex flex-col gap-y-3">
-                          <ReactStars
-                            size={24}
-                            value={testimonial.rating}
-                            activeColor="#ffd700"
-                          />
-                          <p className="text-neutral-200">
-                            {testimonial.message}
-                          </p>
-                          <Image
-                            width={120}
-                            height={120}
-                            className="rounded-md"
-                            src={
-                              testimonial.image! ||
-                              "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
-                            }
-                            alt="review image"
-                          />
-                          <div className="flex flex-row items-center justify-between">
-                            <div className="">
-                              <span className="text-neutral-200 font-medium">
-                                Name
-                              </span>
-                              <div className="flex flex-row items-center gap-x-2 mt-2">
-                                <Image
-                                  width={30}
-                                  height={30}
-                                  className="rounded-md"
-                                  src={
-                                    testimonial.photo! ||
-                                    "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
-                                  }
-                                  alt="review image"
-                                />
-                                <p className="text-neutral-200 font-medium">
-                                  {testimonial.name}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="text-neutral-200 font-medium">
-                              <span>Email</span>
-                              <p>{testimonial.email}</p>
-                            </div>
-                            <div></div>
-                          </div>
-                          <div className="flex flex-row items-center justify-between ">
-                            <div>
-                              <span className="text-neutral-200 font-medium">
-                                Submitted At
-                              </span>
-                              <p className="text-neutral-200 font-medium">
-                                {new Date(
-                                  testimonial.createdAt
-                                ).toLocaleDateString("en-Us", {
-                                  day: "2-digit",
-                                  month: "short",
-                                  year: "numeric",
-                                })}
-                              </p>
-                            </div>
-                            <span>
-                              <Trash2
-                                onClick={() => {
-                                  setIsDeleteOpen(true);
-                                  setDeleteId(testimonial.id);
-                                }}
-                                className="cursor-pointer"
-                              />
-                            </span>
-                          </div>
-                        </div>
-                      </aside>
-                    ))}
-                  </>
-                ) : (
-                  <div className="flex flex-col items-center gap-y-5  ">
-                    <Image
-                      src={spaceImage}
-                      width={280}
-                      height={280}
-                      alt="space image"
-                    />
-                    <p className="text-neutral-400 text-lg">
-                      No testimonial yet
-                    </p>
-                  </div>
-                )}
+                <TestimonialCard
+                  data={data}
+                  isLiked={isLiked}
+                  setIsLiked={setIsLiked}
+                  setIsDeleteOpen={setIsDeleteOpen}
+                  setDeleteId={setDeleteId}
+                />
               </>
             )}
           </div>
