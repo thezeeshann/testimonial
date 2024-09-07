@@ -1,19 +1,17 @@
 
 ![screencapture-localhost-3000-2024-09-07-22_13_57](https://github.com/user-attachments/assets/f2fdd42f-1d04-4a04-ba7c-de1f5d6142c6)
 
-## Tech Stack
+## Tech Stack 💻
 
 - **Framework:** [Next.js](https://nextjs.org)
 - **Language:** [Typescript](https://www.typescriptlang.org/docs/)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com)
-- **User Management:** [Clerk](https://clerk.com)
+- **User Management:** [Auth.js](https://authjs.dev/)
 - **ORM:** [Prisma ORM](https://www.prisma.io/)
 - **UI Components:** [shadcn/ui](https://ui.shadcn.com)
 - **File Uploads:** [uploadthing](https://uploadthing.com)
-- **Typesafe APIs:** [tRPC](https://trpc.io)
-- **Hosting:** [Vercel](https://vercel.com/)
 
-## Key Features
+## Key Features 💡
 
 - Authentication with **Clerk**
 - File uploads with **uploadthing**
