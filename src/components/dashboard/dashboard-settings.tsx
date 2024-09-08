@@ -108,7 +108,13 @@ const DashboardSettings = ({ user }: Session) => {
                   )}
 
                   <UploadButton
-                    className=""
+                    appearance={{
+                      container: {
+                        display: "flex",
+                        alignItems: "flex-start",
+                        marginTop: "0.5rem",
+                      },
+                    }}
                     onUploadBegin={() => {
                       setAvatarUploading(true);
                     }}

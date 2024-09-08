@@ -15,6 +15,7 @@ type ReviewSidebarProp = {
   setIsTestimonialCradOpen: (value: boolean) => void;
   setIsWallOpen: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
+  setIsSingleTestimonialOpen: (value: boolean) => void;
 };
 
 const ReviewSidebar = ({
@@ -22,6 +23,7 @@ const ReviewSidebar = ({
   setIsTestimonialCradOpen,
   setIsWallOpen,
   setIsOpen,
+  setIsSingleTestimonialOpen,
 }: ReviewSidebarProp) => {
   return (
     <div className=" text-neutral-200 w-[30%] flex flex-col gap-y-6">
@@ -63,7 +65,10 @@ const ReviewSidebar = ({
           </span>
           <p className="text-neutral-200 font-medium">Wall of Love</p>
         </div>
-        <div className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]">
+        <div
+          onClick={() => setIsSingleTestimonialOpen(true)}
+          className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]"
+        >
           <span>
             {" "}
             <CodeXml size={18} />

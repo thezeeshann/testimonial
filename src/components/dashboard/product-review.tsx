@@ -40,6 +40,7 @@ import PulsatingDots from "../loading";
 import { deleteTestimonials } from "@/actions/testimonial";
 import { toast } from "sonner";
 import DeleteTestimonialsModal from "../modals/delete-testimonial";
+import SingleTestimonialModal from "../modals/single-testimonial";
 import ReviewSidebar from "./_components/review-sidebar";
 import TestimonialCard from "./_components/testimonial-card";
 
@@ -52,6 +53,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const [isWallOpen, setIsWallOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isSingleTestimonialOpen, setIsSingleTestimonialOpen] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [steps, setSteps] = useState(false);
@@ -124,6 +126,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
             setIsTestimonialCradOpen={setIsTestimonialCradOpen}
             setIsWallOpen={setIsWallOpen}
             setIsOpen={setIsOpen}
+            setIsSingleTestimonialOpen={setIsSingleTestimonialOpen}
           />
           <div className="flex flex-col w-[70%] gap-y-6 ">
             {isTestimonialCradOpen === true && isLiked === false ? (
@@ -369,6 +372,11 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <SingleTestimonialModal
+        isSingleTestimonialOpen={isSingleTestimonialOpen}
+        setIsSingleTestimonialOpen={setIsSingleTestimonialOpen}
+      />
 
       <DeleteTestimonialsModal
         isDeleteOpen={isDeleteOpen}

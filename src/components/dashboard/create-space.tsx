@@ -12,11 +12,23 @@ import { Session } from "next-auth";
 import { useGetSpace } from "@/lib/hooks/useGetReview";
 import spaceImage from "../../../public/no-message.18de8749.svg";
 import { useGetTestimonials } from "@/lib/hooks/useGetTestimonials";
+import { deleteSpace } from "@/actions/space";
+import DeleteSpace from "../modals/delete-space";
+import { toast } from "sonner";
 
 const CreateSpace = ({ user }: Session) => {
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isSpaceId, setSpaceId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading } = useGetSpace(user.id);
+  const { data, isLoading, refetch } = useGetSpace(user.id);
   const { data: testimonials } = useGetTestimonials();
+
+  const handleDeleteSpace = async (spaceId: string) => {
+    const response = await deleteSpace(spaceId);
+    toast.success(response.success);
+    setIsDeleteOpen(false);
+    refetch();
+  };
 
   if (isLoading) {
     return (
@@ -41,33 +53,40 @@ const CreateSpace = ({ user }: Session) => {
       {data?.data?.length! > 0 ? (
         <div className="flex flex-row items-start justify-between flex-wrap ">
           {data!.data?.map((space) => (
-            <Link key={space?.id} href={`/dashboard/products/${space?.name}`}>
-              <div className="bg-[#25282C] cursor-pointer w-[310px] h-[80px] border-2 border-neutral-700 my-16 rounded flex ">
-                <Image
-                  src={
-                    space.logo ||
-                    "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
-                  }
-                  width={80}
-                  height={80}
-                  alt="space image"
-                  className=""
-                />
-                <div className="text-neutral-200 flex flex-row items-center justify-between w-full p-3 hover:bg-[#33363b] ">
+            <div
+              key={space?.id}
+              className="bg-[#25282C]  w-[310px] h-[80px] border-2 border-neutral-700 my-16 rounded flex "
+            >
+              <Image
+                src={
+                  space.logo ||
+                  "https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
+                }
+                width={80}
+                height={80}
+                alt="space image"
+                className=""
+              />
+              <div className="text-neutral-200 cursor-pointer flex flex-row items-center justify-between w-full p-3 hover:bg-[#33363b] ">
+                <Link href={`/dashboard/products/${space?.name}`}>
                   <div>
                     <p className="font-semibold">{space?.name}</p>
                     <span className="text-sm text-neutral-400">
                       Text: {testimonials?.data?.length}
                     </span>
                   </div>
-                  <IoMdSettings
-                    size={22}
-                    color="#a3a3a3"
-                    className="cursor-pointer"
-                  />
-                </div>
+                </Link>
+                <IoMdSettings
+                  onClick={() => {
+                    setIsDeleteOpen(true);
+                    setSpaceId(space.id);
+                  }}
+                  size={22}
+                  color="#a3a3a3"
+                  className="cursor-pointer"
+                />
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       ) : (
@@ -80,6 +99,13 @@ const CreateSpace = ({ user }: Session) => {
       )}
 
       <SpaceForm id={user.id} isOpen={isOpen} setIsOpen={setIsOpen} />
+
+      <DeleteSpace
+        isDeleteOpen={isDeleteOpen}
+        setIsDeleteOpen={setIsDeleteOpen}
+        isSpaceId={isSpaceId}
+        handleDeleteSpace={handleDeleteSpace}
+      />
     </section>
   );
 };
