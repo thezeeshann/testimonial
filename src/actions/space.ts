@@ -57,3 +57,37 @@ export const space = async (values: z.infer<typeof spaceSchema>) => {
     };
   }
 };
+
+// export const editSpace = async (spaceId: string) => {
+//   try {
+//     const space = db.spaces.update({
+//       where: {
+//         id: spaceId,
+//       },
+//       data:{
+
+//       }
+//     });
+//   } catch (error: any) {
+//     return {
+//       error: error.message,
+//     };
+//   }
+// };
+
+export const deleteSpace = async (spaceId: string) => {
+  try {
+    await db.spaces.delete({
+      where: {
+        id: spaceId,
+      },
+    });
+    return {
+      success: "Space deleted.",
+    };
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+};
