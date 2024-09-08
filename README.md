@@ -10,19 +10,17 @@
 - **ORM:** [Prisma ORM](https://www.prisma.io/)
 - **UI Components:** [shadcn/ui](https://ui.shadcn.com)
 - **File Uploads:** [uploadthing](https://uploadthing.com)
+- **Data Fetching:** [TanStack Query](https://tanstack.com/query/latest)
 
 ## Key Features 💡
 
-- Authentication with **Clerk**
+- Authentication with **Auth js**
 - File uploads with **uploadthing**
-- Advance **Prisma ORM** concepts
 - Database on **Neon**
 - Validation with **Zod**
-- Text filteration with **bad-words**
-- Image filteration with **nsfw-filter**
-- Custom notifications on user interactions
-- Custom component on top of  **shadcn/ui**
-- Recursive threads with **prisma.$queryRaw**
+- Create Space
+- Get testimonials
+- Add testimonials to your website
 - ***...and many more !***
   
 
