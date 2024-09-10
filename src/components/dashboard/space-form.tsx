@@ -1,10 +1,9 @@
 "use client";
 
-import spaceImage from "../../../public/no-message.18de8749.svg";
 import Image from "next/image";
 import successImg from "../../../public/8Iv5lqKwKsZ2g.webp";
 import { Button } from "@/components/ui/button";
-import { CirclePlus, Flame, Pencil, Plus, Trash2 } from "lucide-react";
+import { Flame, Pencil, Plus, Trash2 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
@@ -50,7 +49,6 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import React, { ChangeEvent } from "react";
 import Link from "next/link";
-import { UploadDropzone } from "@/app/api/uploadthing/uploadthing";
 import PulsatingDots from "../loading";
 
 type SpaceFormProp = {
@@ -297,7 +295,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                           }}
                           endpoint="imageUploader"
                           onClientUploadComplete={(res) => {
-                            form.setValue("logo", res[0].url);
+                            form.setValue("logo", res[0].url!);
                             console.log("Files: ", res);
                           }}
                           onUploadError={(error: Error) => {
@@ -306,10 +304,6 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                               message: error.message,
                             });
                           }}
-                          // onUploadBegin={(e) => {
-                          //   field.onChange(e);
-                          //   handleImageChange(e);
-                          // }}
                         />
 
                         <FormControl>
@@ -317,10 +311,6 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                             {...field}
                             type="hidden"
                             className="bg-white"
-                            // onChange={(e) => {
-                            //   field.onChange(e);
-                            //   handleImageChange(e);
-                            // }}
                           />
                         </FormControl>
                         <FormDescription />

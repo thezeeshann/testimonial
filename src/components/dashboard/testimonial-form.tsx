@@ -142,7 +142,6 @@ const TestimonialForm = ({ isOpen, setIsOpen, data }: TestimonialFormProsp) => {
           </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              {/* <div className="flex flex-col text-neutral-500 mt-3"> */}
               <FormField
                 control={form.control}
                 name="rating"

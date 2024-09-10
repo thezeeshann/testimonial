@@ -1,22 +1,14 @@
 "use client";
 
 import {
-  Dot,
   Pencil,
-  Link as LinkIcon,
-  Heart,
-  CodeXml,
-  ArchiveRestore,
-  FilePenLine,
   Copy,
   MoveLeft,
   Flame,
-  Trash2,
 } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import ReactStars from "react-rating-stars-component";
-import { FaHeart } from "react-icons/fa";
 import Link from "next/link";
 import {
   Dialog,
@@ -43,6 +35,7 @@ import DeleteTestimonialsModal from "../modals/delete-testimonial";
 import SingleTestimonialModal from "../modals/single-testimonial";
 import ReviewSidebar from "./_components/review-sidebar";
 import TestimonialCard from "./_components/testimonial-card";
+import UpdateSpaceModal from "../modals/update-space";
 
 type SingleReviewProp = {
   slug: string;
@@ -53,6 +46,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const [isWallOpen, setIsWallOpen] = useState(false);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [isSingleTestimonialOpen, setIsSingleTestimonialOpen] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const [isLiked, setIsLiked] = useState(false);
@@ -110,6 +104,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
             </div>
             <div className="">
               <Button
+                onClick={() => setIsEditOpen(true)}
                 variant={"secondary"}
                 className="flex text-black flex-row gap-x-2 rounded-sm"
               >
@@ -127,6 +122,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
             setIsWallOpen={setIsWallOpen}
             setIsOpen={setIsOpen}
             setIsSingleTestimonialOpen={setIsSingleTestimonialOpen}
+            setIsEditOpen={setIsEditOpen}
           />
           <div className="flex flex-col w-[70%] gap-y-6 ">
             {isTestimonialCradOpen === true && isLiked === false ? (
@@ -384,6 +380,8 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
         deleteId={deleteId}
         handleDeleteTestimonial={handleDeleteTestimonial}
       />
+
+      <UpdateSpaceModal isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen} />
     </>
   );
 };

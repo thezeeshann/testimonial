@@ -16,6 +16,7 @@ type ReviewSidebarProp = {
   setIsWallOpen: (value: boolean) => void;
   setIsOpen: (value: boolean) => void;
   setIsSingleTestimonialOpen: (value: boolean) => void;
+  setIsEditOpen: (value: boolean) => void;
 };
 
 const ReviewSidebar = ({
@@ -24,6 +25,7 @@ const ReviewSidebar = ({
   setIsWallOpen,
   setIsOpen,
   setIsSingleTestimonialOpen,
+  setIsEditOpen,
 }: ReviewSidebarProp) => {
   return (
     <div className=" text-neutral-200 w-[30%] flex flex-col gap-y-6">
@@ -93,7 +95,10 @@ const ReviewSidebar = ({
             <p className="text-neutral-200 font-medium">Public landing page</p>
           </div>
         </Link>
-        <div className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]">
+        <div
+          onClick={() => setIsEditOpen(true)}
+          className="flex flex-row gap-x-2 mt-1 items-center cursor-pointer hover:bg-neutral-700 rounded-md py-2 px-[10px]"
+        >
           <span>
             {" "}
             <FilePenLine size={18} />
