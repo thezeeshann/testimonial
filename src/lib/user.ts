@@ -8,7 +8,7 @@ export const currentUser = async () => {
   }
   const user = await db.user.findUnique({
     where: {
-      email: session.user.email,
+      email: session.user.email!,
     },
   });
 
