@@ -262,7 +262,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel htmlFor="space">
+                        <FormLabel htmlFor="name">
                           Space name <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
@@ -343,7 +343,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <Label htmlFor="password">
+                        <Label htmlFor="message">
                           Your custom message{" "}
                           <span className="text-red-500">*</span>
                         </Label>
@@ -423,7 +423,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                       render={({ field }) => (
                         <FormItem>
                           <div className="flex flex-col items-center gap-y-2">
-                            <Label htmlFor="password">
+                            <Label htmlFor="rating">
                               Collect star ratings
                             </Label>
                             <FormControl>
@@ -446,7 +446,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                           render={({ field }) => (
                             <FormItem>
                               <div className="flex flex-col items-center gap-y-2">
-                                <Label htmlFor="password">Choose a theme</Label>
+                                <Label htmlFor="theme">Choose a theme</Label>
                                 <FormControl>
                                   <Switch
                                     checked={field.value === "Dark"}

@@ -381,7 +381,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
         handleDeleteTestimonial={handleDeleteTestimonial}
       />
 
-      <UpdateSpaceModal isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen} />
+      <UpdateSpaceModal isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen} slug={slug} />
     </>
   );
 };

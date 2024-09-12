@@ -41,36 +41,100 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { Textarea } from "../ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@radix-ui/react-switch";
-import { UploadButton } from "@uploadthing/react";
+import { UploadButton } from "@/app/api/uploadthing/uploadthing";
 import { Button } from "@/components/ui/button";
+import { useGetSingleReview } from "@/lib/hooks/useGetSingleReview";
+import { useCallback, useEffect } from "react";
+import PulsatingDots from "../loading";
+import { useTheme } from "next-themes";
 
 type UpdateSpaceModalProp = {
   isEditOpen: boolean;
   setIsEditOpen: (value: boolean) => void;
+  slug: string;
 };
 
 const UpdateSpaceModal = ({
   isEditOpen,
   setIsEditOpen,
+  slug,
 }: UpdateSpaceModalProp) => {
+  const { setTheme, theme: cardTheme } = useTheme();
+  const { data } = useGetSingleReview(slug);
+  console.log(data);
   const form = useForm<z.infer<typeof spaceSchema>>({
     resolver: zodResolver(spaceSchema),
-    defaultValues: {
-      name: "",
-      logo: "",
-      title: "",
-      message: "",
-      rating: false,
-      theme: "Light",
-      questionOne: undefined,
-      questionTwo: undefined,
-      questionThree: undefined,
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: ({
+      spaceId,
+      values,
+    }: {
+      spaceId: string;
+      values: z.infer<typeof spaceSchema>;
+    }) => editSpace(spaceId, values),
+    onSuccess: (data) => {
+      if (data?.error) {
+        return toast.error(`${data.error}`);
+      }
+
+      if (data?.success) {
+        form.reset();
+        toast.success(`${data.success}`);
+      }
+    },
+    onError: () => {
+      toast.error("Somethig went wrong");
     },
   });
 
   function onSubmit(values: z.infer<typeof spaceSchema>) {
-    console.log(values);
+    const spaceId = data?.data?.id; 
+    if (spaceId) {
+      mutate({ spaceId, values });
+    } else {
+      toast.error("Space ID is missing.");
+    }
   }
+
+  const handleReset = useCallback(() => {
+    form.reset({
+      name: data?.data?.name || undefined,
+      logo: data?.data?.logo || undefined,
+      title: data?.data?.title || undefined,
+      message: data?.data?.message || undefined,
+      rating: data?.data?.rating || false,
+      theme: data?.data?.theme || "Light",
+      questionOne: data?.data?.questionOne || undefined,
+      questionTwo: data?.data?.questionTwo || undefined,
+      questionThree: data?.data?.questionThree || undefined,
+    });
+  }, [
+    data?.data?.name,
+    data?.data?.logo,
+    data?.data?.title,
+    data?.data?.message,
+    data?.data?.rating,
+    data?.data?.theme,
+    data?.data?.questionOne,
+    data?.data?.questionTwo,
+    data?.data?.questionThree,
+  ]);
+
+  useEffect(() => {
+    handleReset();
+  }, [handleReset]);
+
+  const handleTheme = (checked: boolean) => {
+    if (cardTheme === "light") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+    const newTheme = checked ? "Dark" : "Light";
+    form.setValue("theme", newTheme);
+  };
 
   return (
     <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
@@ -97,7 +161,7 @@ const UpdateSpaceModal = ({
             <Card className="w-[360px] py-5 px-2 relative">
               <CardHeader>
                 <CardTitle className=" w-ful mx-auto">
-                  {/* {data?.data?.logo ? (
+                  {data?.data?.logo ? (
                     <Image
                       src={data.data.logo}
                       alt="Selected Logo"
@@ -107,7 +171,7 @@ const UpdateSpaceModal = ({
                     />
                   ) : (
                     <Flame size={55} color="#235BD5" strokeWidth={1.25} />
-                  )} */}
+                  )}
                 </CardTitle>
                 <CardDescription>
                   <div className="gap-y-4 mt-5 flex flex-col justify-center items-center">
@@ -155,19 +219,209 @@ const UpdateSpaceModal = ({
                   control={form.control}
                   name="name"
                   render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Username</FormLabel>
+                    <FormItem className="border-2 border-red-500">
+                      <FormLabel htmlFor="space">
+                        Space name <span className="text-red-500">*</span>
+                      </FormLabel>
                       <FormControl>
-                        <Input placeholder="shadcn" {...field} />
+                        <Input
+                          {...field}
+                          placeholder="Public URL is: localhost:3000/your-space"
+                          className="bg-white"
+                        />
                       </FormControl>
-                      <FormDescription>
-                        This is your public display name.
-                      </FormDescription>
+                      <FormDescription />
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Submit</Button>
+
+                <FormField
+                  control={form.control}
+                  name="logo"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="space">Space logo</FormLabel>
+
+                      <UploadButton
+                        appearance={{
+                          container: {
+                            display: "flex",
+                            alignItems: "flex-start",
+                            marginTop: "0.5rem",
+                          },
+                        }}
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          form.setValue("logo", res[0].url!);
+                          console.log("Files: ", res);
+                        }}
+                        onUploadError={(error: Error) => {
+                          form.setError("logo", {
+                            type: "validate",
+                            message: error.message,
+                          });
+                        }}
+                      />
+
+                      <FormControl>
+                        <Input {...field} type="hidden" className="bg-white" />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label>
+                        Header title <span className="text-red-500">*</span>
+                      </Label>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="would you like to give a shoutout of xyz?"
+                          className="bg-white"
+                        />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Label>
+                        Your custom message{" "}
+                        <span className="text-red-500">*</span>
+                      </Label>
+                      <FormControl>
+                        <Textarea
+                          rows={4}
+                          {...field}
+                          placeholder="Write a wram message to you customer, and give them simple direaction on how to make the best testimonial."
+                          className="bg-white"
+                        />
+                      </FormControl>
+                      <FormDescription />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex flex-col gap-y-2">
+                  <p>Questions</p>
+
+                  <div className="flex flex-col gap-y-2 ">
+                    <div className="">
+                      <FormField
+                        control={form.control}
+                        name="questionOne"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input {...field} className="bg-white w-full" />
+                            </FormControl>
+                            <FormDescription />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* <Trash2 className="text-neutral-200 cursor-pointer" /> */}
+                    </div>
+                    <div className="">
+                      <FormField
+                        control={form.control}
+                        name="questionTwo"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input {...field} className="bg-white w-full" />
+                            </FormControl>
+                            <FormDescription />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* <Trash2 className="text-neutral-200 cursor-pointer" /> */}
+                    </div>
+                    <div className="">
+                      <FormField
+                        control={form.control}
+                        name="questionThree"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input {...field} className="bg-white" />
+                            </FormControl>
+                            <FormDescription />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* <Trash2 className="text-neutral-200 cursor-pointer" /> */}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-row justify-between gap-x-7 items-center pt-3">
+                  <FormField
+                    control={form.control}
+                    name="rating"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex flex-col items-center gap-y-2">
+                          <Label>Collect star ratings</Label>
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                        </div>
+                        <FormDescription />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {cardTheme && (
+                    <div>
+                      <FormField
+                        control={form.control}
+                        name="theme"
+                        render={({ field }) => (
+                          <FormItem>
+                            <div className="flex flex-col items-center gap-y-2">
+                              <Label>Choose a theme</Label>
+                              <FormControl>
+                                <Switch
+                                  checked={field.value === "Dark"}
+                                  onCheckedChange={(checked: boolean) => {
+                                    handleTheme(checked);
+                                    field.onChange(checked ? "Dark" : "Light");
+                                  }}
+                                />
+                              </FormControl>
+                            </div>
+                            <FormDescription />
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  )}
+                  <div></div>
+                </div>
+                <Button disabled={isPending} type="submit" className=" w-full">
+                  {isPending ? <PulsatingDots /> : "Update Space"}
+                </Button>
               </form>
             </Form>
           </div>
