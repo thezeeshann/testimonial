@@ -7,17 +7,9 @@ import ReactStars from "react-rating-stars-component";
 import { FaHeart } from "react-icons/fa";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { Testimonial } from "@/types";
 
-type Testimonial = {
-  id: string;
-  rating: number;
-  message: string;
-  image?: string;
-  photo?: string;
-  name: string;
-  email: string;
-  createdAt: string;
-};
+
 
 type TestimonialData = {
   data?: Testimonial[];

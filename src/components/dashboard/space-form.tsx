@@ -78,7 +78,6 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
 
   const { mutate, isPending } = useMutation({
     mutationFn: space,
-
     onSuccess: (data) => {
       if (data?.error) {
         return toast.error(`${data.error}`);
@@ -423,9 +422,7 @@ const SpaceForm: React.FC<SpaceFormProp> = ({ isOpen, setIsOpen, id }) => {
                       render={({ field }) => (
                         <FormItem>
                           <div className="flex flex-col items-center gap-y-2">
-                            <Label htmlFor="rating">
-                              Collect star ratings
-                            </Label>
+                            <Label htmlFor="rating">Collect star ratings</Label>
                             <FormControl>
                               <Switch
                                 checked={field.value}

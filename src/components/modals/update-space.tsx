@@ -35,7 +35,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useMutation } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Textarea } from "../ui/textarea";
@@ -59,9 +59,9 @@ const UpdateSpaceModal = ({
   setIsEditOpen,
   slug,
 }: UpdateSpaceModalProp) => {
+  const queryClient = useQueryClient();
   const { setTheme, theme: cardTheme } = useTheme();
-  const { data } = useGetSingleReview(slug);
-  console.log(data);
+  const { data, refetch } = useGetSingleReview(slug);
   const form = useForm<z.infer<typeof spaceSchema>>({
     resolver: zodResolver(spaceSchema),
   });
@@ -82,6 +82,7 @@ const UpdateSpaceModal = ({
       if (data?.success) {
         form.reset();
         toast.success(`${data.success}`);
+        setIsEditOpen(false);
       }
     },
     onError: () => {
@@ -90,7 +91,7 @@ const UpdateSpaceModal = ({
   });
 
   function onSubmit(values: z.infer<typeof spaceSchema>) {
-    const spaceId = data?.data?.id; 
+    const spaceId = data?.data?.id;
     if (spaceId) {
       mutate({ spaceId, values });
     } else {
@@ -124,7 +125,7 @@ const UpdateSpaceModal = ({
 
   useEffect(() => {
     handleReset();
-  }, [handleReset]);
+  }, [handleReset, refetch]);
 
   const handleTheme = (checked: boolean) => {
     if (cardTheme === "light") {
@@ -148,64 +149,70 @@ const UpdateSpaceModal = ({
         <div className="flex w-full justify-between items-start flex-row ">
           <div className="w-[40%] p-4 relative">
             {/*  */}
-            <DialogDescription>
-              <DialogTitle asChild>
-                <Badge
-                  variant="primary"
-                  className="absolute left-14 top-1 z-10"
-                >
-                  Live preview - Testimonial page
-                </Badge>
-              </DialogTitle>
-            </DialogDescription>
-            <Card className="w-[360px] py-5 px-2 relative">
-              <CardHeader>
-                <CardTitle className=" w-ful mx-auto">
-                  {data?.data?.logo ? (
-                    <Image
-                      src={data.data.logo}
-                      alt="Selected Logo"
-                      width={100}
-                      height={100}
-                      className="rounded-full"
-                    />
-                  ) : (
-                    <Flame size={55} color="#235BD5" strokeWidth={1.25} />
-                  )}
-                </CardTitle>
-                <CardDescription>
-                  <div className="gap-y-4 mt-5 flex flex-col justify-center items-center">
-                    <p className="text-3xl font-bold dark:text-neutral-200">
-                      {`${
-                        form.watch("title")
-                          ? `${form.watch("title")}`
-                          : "Header goes here..."
-                      }`}
+            <div
+              className={`"w-[40%] p-4 relative ${
+                cardTheme === "dark" ? "dark" : "bg-white"
+              }`}
+            >
+              <DialogDescription>
+                <DialogTitle asChild>
+                  <Badge
+                    variant="primary"
+                    className="absolute left-14 top-1 z-10 text-sm"
+                  >
+                    Live preview - Testimonial page
+                  </Badge>
+                </DialogTitle>
+              </DialogDescription>
+              <Card className="w-[360px] py-5 px-2 relative">
+                <CardHeader>
+                  <CardTitle className=" w-ful mx-auto">
+                    {data?.data?.logo ? (
+                      <Image
+                        src={data.data.logo}
+                        alt="Selected Logo"
+                        width={100}
+                        height={100}
+                        className="rounded-full"
+                      />
+                    ) : (
+                      <Flame size={55} color="#235BD5" strokeWidth={1.25} />
+                    )}
+                  </CardTitle>
+                  <CardDescription>
+                    <div className="gap-y-4 mt-5 flex flex-col justify-center items-center">
+                      <p className="text-3xl font-bold dark:text-neutral-200">
+                        {`${
+                          form.watch("title")
+                            ? `${form.watch("title")}`
+                            : "Header goes here..."
+                        }`}
+                      </p>
+                      <p className="dark:text-neutral-200">
+                        {`${
+                          form.watch("message")
+                            ? `${form.watch("message")}`
+                            : "Your custom message goes here..."
+                        }`}
+                      </p>
+                    </div>
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div>
+                    <p className="font-semibold dark:text-neutral-200 text-xl">
+                      QUESTIONS
                     </p>
-                    <p className="dark:text-neutral-200">
-                      {`${
-                        form.watch("message")
-                          ? `${form.watch("message")}`
-                          : "Your custom message goes here..."
-                      }`}
-                    </p>
+                    <div className="bg-blue-500 max-w-12 h-1 mt-1" />
+                    <ul className="flex flex-col text-sm mt-2 gap-y-1">
+                      <li>{form.watch("questionOne")}</li>
+                      <li>{form.watch("questionTwo")}</li>
+                      <li>{form.watch("questionThree")}</li>
+                    </ul>
                   </div>
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div>
-                  <p className="font-semibold dark:text-neutral-200 text-xl">
-                    QUESTIONS
-                  </p>
-                  <div className="bg-blue-500 max-w-12 h-1 mt-1" />
-                  <ul className="flex flex-col text-sm mt-2 gap-y-1">
-                    <li>{form.watch("questionOne")}</li>
-                    <li>{form.watch("questionTwo")}</li>
-                    <li>{form.watch("questionThree")}</li>
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           {/* form */}
@@ -213,13 +220,13 @@ const UpdateSpaceModal = ({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
+                className="space-y-2"
               >
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
-                    <FormItem className="border-2 border-red-500">
+                    <FormItem>
                       <FormLabel htmlFor="space">
                         Space name <span className="text-red-500">*</span>
                       </FormLabel>
@@ -334,7 +341,6 @@ const UpdateSpaceModal = ({
                           </FormItem>
                         )}
                       />
-                      {/* <Trash2 className="text-neutral-200 cursor-pointer" /> */}
                     </div>
                     <div className="">
                       <FormField
@@ -350,7 +356,6 @@ const UpdateSpaceModal = ({
                           </FormItem>
                         )}
                       />
-                      {/* <Trash2 className="text-neutral-200 cursor-pointer" /> */}
                     </div>
                     <div className="">
                       <FormField
@@ -366,7 +371,6 @@ const UpdateSpaceModal = ({
                           </FormItem>
                         )}
                       />
-                      {/* <Trash2 className="text-neutral-200 cursor-pointer" /> */}
                     </div>
                   </div>
                 </div>
