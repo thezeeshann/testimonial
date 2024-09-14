@@ -12,3 +12,14 @@ export type TSpace = {
   questionTwo?: string;
   questionThree?: string;
 };
+
+export type Testimonial = {
+  id: string;
+  rating: number;
+  message: string;
+  image?: string;
+  photo?: string;
+  name: string;
+  email: string;
+  createdAt: string;
+};
