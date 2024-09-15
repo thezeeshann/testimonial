@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Pencil,
-  Copy,
-  MoveLeft,
-  Flame,
-} from "lucide-react";
+import { Pencil, Copy, MoveLeft, Flame } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import ReactStars from "react-rating-stars-component";
@@ -54,6 +49,8 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
   const { data, isLoading } = useGetTestimonials();
   const { data: singleSpace, refetch } = useGetSingleReview(slug);
   const [isTestimonialCradOpen, setIsTestimonialCradOpen] = useState(false);
+
+  console.log(data);
 
   const handleDeleteTestimonial = async (testimonialId: string) => {
     const response = await deleteTestimonials(testimonialId);
@@ -255,49 +252,74 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                     )}
                   </div>
 
-                  {isCardOpen && (
-                    <>
-                      <div className="mt-5 border-[1px] w-[350px] mx-auto p-4 rounded-lg ">
-                        <div className="flex flex-row items-center gap-x-3">
-                          <Image
-                            width={80}
-                            height={80}
-                            className="rounded-md"
-                            src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
-                            alt="review image"
-                          />
-                          <p className="font-semibold text-black">Jhon Doe</p>
-                        </div>
-                        <div className="flex flex-col mt-3 gap-y-2">
-                          <ReactStars
-                            size={24}
-                            value={4}
-                            activeColor="#ffd700"
-                          />
-                          <Image
-                            width={1000}
-                            height={1000}
-                            className="rounded-md"
-                            src="https://firebasestorage.googleapis.com/v0/b/testimonialto.appspot.com/o/spaces%2Fstuent-reviews%2Flogo?alt=media&token=9dec481d-6412-4fde-bd6e-e3270e2bb56b"
-                            alt="review image"
-                          />
-                          <p>
-                            In publishing and graphic design, Lorem ipsum is a
-                            placeholder text In publishing and graphic desi In
-                            publishing and graphic design, Lorem ipsum is a
-                            placeholder text commonly us
+                  {isCardOpen &&
+                    (isLiked === true ? (
+                      <>
+                        {data?.data?.map((testimonial) => (
+                          <div
+                            key={testimonial.id}
+                            className="mt-5 border-[1px] w-[350px] mx-auto p-4 rounded-lg "
+                          >
+                            <div className="flex flex-row items-center gap-x-3">
+                              <Image
+                                width={50}
+                                height={50}
+                                className="rounded-full"
+                                src={testimonial.photo!}
+                                alt="review image"
+                              />
+                              <p className="font-semibold text-black">
+                                {testimonial.name}
+                              </p>
+                            </div>
+                            <div className="flex flex-col mt-3 gap-y-2">
+                              <ReactStars
+                                size={24}
+                                value={testimonial.rating}
+                                activeColor="#ffd700"
+                              />
+                              <Image
+                                width={1000}
+                                height={1000}
+                                className="rounded-md"
+                                src={testimonial.image!}
+                                alt="review image"
+                              />
+                              <p>{testimonial.message}</p>
+                              <p>
+                                {new Date(
+                                  testimonial.createdAt
+                                ).toLocaleDateString("en-Us", {
+                                  day: "2-digit",
+                                  month: "short",
+                                  year: "numeric",
+                                })}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                        <div className="flex flex-row gap-x-1 cursor-pointer justify-center items-center mt-5">
+                          <p className="font-semibold text-xl text-black">
+                            Testimonial
                           </p>
-                          <p>Jul 14, 2024</p>
+                          <Flame size={28} color="#235BD5" strokeWidth={2.25} />
                         </div>
-                      </div>
-                      <div className="flex flex-row gap-x-1 cursor-pointer justify-center items-center mt-5">
-                        <p className="font-semibold text-xl text-black">
-                          Testimonial
-                        </p>
-                        <Flame size={28} color="#235BD5" strokeWidth={2.25} />
-                      </div>
-                    </>
-                  )}
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex mt-5 flex-col items-center gap-y-5  ">
+                          <Image
+                            src={spaceImage}
+                            width={230}
+                            height={230}
+                            alt="space image"
+                          />
+                          <p className=" font-semibold text-lg">
+                            No testimonials found
+                          </p>
+                        </div>
+                      </>
+                    ))}
                 </div>
               ) : (
                 <>
@@ -333,7 +355,12 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
                   Close
                 </Button>
               </DialogClose>
-              <Button className="w-[50%] rounded">Copy</Button>
+              <Button className="w-[50%] rounded flex flex-row  items-center gap-x-1">
+                <span>
+                  <Copy size={16} />
+                </span>
+                Copy
+              </Button>
             </DialogFooter>
           )}
         </DialogContent>
@@ -381,7 +408,11 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
         handleDeleteTestimonial={handleDeleteTestimonial}
       />
 
-      <UpdateSpaceModal isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen} slug={slug} />
+      <UpdateSpaceModal
+        isEditOpen={isEditOpen}
+        setIsEditOpen={setIsEditOpen}
+        slug={slug}
+      />
     </>
   );
 };

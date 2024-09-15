@@ -35,7 +35,7 @@ const GenerateScript = ({ spaceName,theme }: GenerateScriptProp) => {
           <span> src</span>
           <span className="text-[#D4D4D4]">=</span>
           <span className="text-[#CE9178]">
-            &quot;https://embed-v2.testimonial.to/w/stuent-reviews?theme=light&amp;card=base&amp;loadMore=on&amp;initialCount=20&amp;tag=all&quot;
+            &quot;https://embed-v2.testimonial.to/w/{spaceName}?theme={theme}&amp;card=base&amp;loadMore=on&amp;initialCount=20&amp;tag=all&quot;
           </span>
           <span> frameborder</span>
           <span className="text-[#D4D4D4]">=</span>
@@ -74,7 +74,7 @@ const GenerateScript = ({ spaceName,theme }: GenerateScriptProp) => {
           <span className="text-[#D4D4D4]">,</span>
           <span className="text-[#CE9178]">
             {" "}
-            &apos;#testimonialto-stuent-reviews-tag-all-light&apos;
+            &apos;#testimonialto-{spaceName}-tag-all-{theme}&apos;
           </span>
           <span className="text-[#D4D4D4]">{")"}</span>
           <span className="text-[#D4D4D4]">;</span>
