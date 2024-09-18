@@ -9,7 +9,7 @@
 | 5. Space Landing Page | 6. User Profile Page |
 | ![Login Page](https://github.com/user-attachments/assets/89a3179a-c659-4a23-ba14-b85de78a51a1) |![Register Page](https://github.com/user-attachments/assets/179fa1bd-cfcd-4ac7-905a-388590c4ad31)|
 | 7. Create Testimonial Page |
-| ![Create Testimonial Page](https://github.com/user-attachments/assets/a287cb19-4630-473d-9f90-d31ecb7d2dfa)
+| ![Create Testimonial Page](https://github.com/user-attachments/assets/2e04e191-e538-492a-8a96-26389648675d)
 
 ## Tech Stack 💻
 
