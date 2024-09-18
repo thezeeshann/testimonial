@@ -31,6 +31,7 @@ import SingleTestimonialModal from "../modals/single-testimonial";
 import ReviewSidebar from "./_components/review-sidebar";
 import TestimonialCard from "./_components/testimonial-card";
 import UpdateSpaceModal from "../modals/update-space";
+import CollectingWidgetModal from "../modals/collecting-widget";
 
 type SingleReviewProp = {
   slug: string;
@@ -39,18 +40,21 @@ type SingleReviewProp = {
 const SingleReview = ({ slug }: SingleReviewProp) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isWallOpen, setIsWallOpen] = useState(false);
+  console.log("wall", isWallOpen);
   const [isCardOpen, setIsCardOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isSingleTestimonialOpen, setIsSingleTestimonialOpen] = useState(false);
   const [deleteId, setDeleteId] = useState("");
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState({});
   const [steps, setSteps] = useState(false);
   const { data, isLoading } = useGetTestimonials();
   const { data: singleSpace, refetch } = useGetSingleReview(slug);
   const [isTestimonialCradOpen, setIsTestimonialCradOpen] = useState(false);
 
-  console.log(data);
+  const hasLikedTestimonials = Object.values(isLiked).some(
+    (like) => like === true
+  );
 
   const handleDeleteTestimonial = async (testimonialId: string) => {
     const response = await deleteTestimonials(testimonialId);
@@ -122,7 +126,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
             setIsEditOpen={setIsEditOpen}
           />
           <div className="flex flex-col w-[70%] gap-y-6 ">
-            {isTestimonialCradOpen === true && isLiked === false ? (
+            {isTestimonialCradOpen === true && !hasLikedTestimonials ? (
               <>
                 <div className="flex flex-col items-center gap-y-5  ">
                   <Image
@@ -139,7 +143,7 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
             ) : (
               <>
                 <TestimonialCard
-                  data={data}
+                  data={data || undefined} // Providing a default value when data is undefined
                   isLiked={isLiked}
                   setIsLiked={setIsLiked}
                   setIsDeleteOpen={setIsDeleteOpen}
@@ -366,35 +370,11 @@ const SingleReview = ({ slug }: SingleReviewProp) => {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="max-w-[65%] h-[90%] overflow-y-scroll">
-          <DialogHeader>
-            <DialogTitle className="text-center text-3xl font-bold">
-              Add collecting widget to your own website
-            </DialogTitle>
-            <DialogDescription></DialogDescription>
-          </DialogHeader>
-          <div>
-            <TestimonialReview slug={slug} />
-          </div>
-          <DialogFooter className="">
-            <div className="flex flex-row items-center justify-between">
-              <Button className="w-[50%]" variant={"secondary"}>
-                Close
-              </Button>
-              <Button
-                type="submit"
-                className="flex flex-row w-[50% items-center gap-x-1"
-              >
-                <span>
-                  <Copy size={16} />
-                </span>
-                <span>Copy Code</span>
-              </Button>
-            </div>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <CollectingWidgetModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        slug={slug}
+      />
 
       <SingleTestimonialModal
         isSingleTestimonialOpen={isSingleTestimonialOpen}

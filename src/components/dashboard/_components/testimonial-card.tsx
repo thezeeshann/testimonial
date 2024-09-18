@@ -9,8 +9,6 @@ import { toast } from "sonner";
 import { useEffect } from "react";
 import { Testimonial } from "@/types";
 
-
-
 type TestimonialData = {
   data?: Testimonial[];
 };
@@ -31,11 +29,18 @@ const TestimonialCard = ({
   setDeleteId,
 }: TestimonialCardProps) => {
   useEffect(() => {
-    const storedLike = localStorage.getItem("like");
-    if (storedLike === "true") {
-      setIsLiked(true);
-    }
-  }, [setIsLiked]);
+    const storedLikes = JSON.parse(localStorage.getItem("likes")) || {};
+    setIsLiked(storedLikes);
+  }, []);
+
+  // Function to handle like/unlike actions
+  const handleLikeClick = (id) => {
+    setIsLiked((prevLikes) => {
+      const updatedLikes = { ...prevLikes, [id]: !prevLikes[id] };
+      localStorage.setItem("likes", JSON.stringify(updatedLikes)); // Save to localStorage
+      return updatedLikes;
+    });
+  };
 
   return (
     <>
@@ -53,13 +58,12 @@ const TestimonialCard = ({
                   </span>
                 </div>
 
-                {isLiked === true ? (
+                {isLiked[testimonial.id] ? (
                   <FaHeart
                     className="cursor-pointer"
                     onClick={() => {
-                      setIsLiked(false);
-                      localStorage.removeItem("like");
-                      toast.success("Remove from wall of the love ");
+                      handleLikeClick(testimonial.id);
+                      toast.success("Removed from wall of love");
                     }}
                     color="#ef4444"
                     size={25}
@@ -68,8 +72,7 @@ const TestimonialCard = ({
                   <Heart
                     className="cursor-pointer"
                     onClick={() => {
-                      setIsLiked(true);
-                      localStorage.setItem("like", "true");
+                      handleLikeClick(testimonial.id);
                       toast.success("Added to the wall of love");
                     }}
                     size={25}
@@ -79,6 +82,7 @@ const TestimonialCard = ({
               </div>
               <div className="flex flex-col gap-y-3">
                 <ReactStars
+                  edit={false}
                   size={24}
                   value={testimonial.rating}
                   activeColor="#ffd700"

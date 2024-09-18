@@ -93,7 +93,7 @@ const DashboardSettings = ({ user }: Session) => {
                   </FormLabel>
 
                   {!form.getValues("image") && (
-                    <div className="font-bold text-neutral-200 text-3xl border-2 p-2 w-[40px] text-start rounded-full">
+                    <div className="font-bold text-neutral-200 text-3xl border-2 p-2 w-[50px] text-start rounded-full">
                       {user?.name?.charAt(0).toUpperCase()}
                     </div>
                   )}
