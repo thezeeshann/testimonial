@@ -1,9 +1,6 @@
 
 ![screencapture-localhost-3000-2024-09-07-22_13_57](https://github.com/user-attachments/assets/f2fdd42f-1d04-4a04-ba7c-de1f5d6142c6)
 
-![Screenshot 2024-09-18 220027]()
-
-
 |1. Sign Up Page |2. Sign In Page |
 |:---:|:---:|
 | ![Sign Up Page](https://github.com/user-attachments/assets/1e7ecbd1-1b0c-4a32-bc5f-ac4ecf08f200) |![Sign In Page](https://github.com/user-attachments/assets/a5c80496-e41d-4252-9a51-859cb09656e7)|
