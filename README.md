@@ -5,7 +5,7 @@
 |:---:|:---:|
 | ![Sign Up Page](https://github.com/user-attachments/assets/1e7ecbd1-1b0c-4a32-bc5f-ac4ecf08f200) |![Sign In Page](https://github.com/user-attachments/assets/a5c80496-e41d-4252-9a51-859cb09656e7)|
 | 3. Create Space | 4. View Spaces | 
-| ![Create Space](https://github.com/user-attachments/assets/19f4b482-d3cd-4b20-b5f3-11bf3acf942d) |![View Spaces](https://github.com/user-attachments/assets/d0f40b53-7f02-4f94-958f-4ec79411d1c5)|
+| ![Create Space](https://github.com/user-attachments/assets/19f4b482-d3cd-4b20-b5f3-11bf3acf942d) |![View Spaces](https://github.com/user-attachments/assets/7096e84d-98ec-4012-8a62-a582753accda)|
 | 5. Space Landing Page | 6. User Profile Page |
 | ![ Space Landing](https://github.com/user-attachments/assets/89a3179a-c659-4a23-ba14-b85de78a51a1) |![User Profile](https://github.com/user-attachments/assets/179fa1bd-cfcd-4ac7-905a-388590c4ad31)|
 | 7. Create Testimonial Page | 6. Wall of Love Page |
