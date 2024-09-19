@@ -33,11 +33,10 @@ const TestimonialCard = ({
     setIsLiked(storedLikes);
   }, []);
 
-  // Function to handle like/unlike actions
   const handleLikeClick = (id) => {
     setIsLiked((prevLikes) => {
       const updatedLikes = { ...prevLikes, [id]: !prevLikes[id] };
-      localStorage.setItem("likes", JSON.stringify(updatedLikes)); // Save to localStorage
+      localStorage.setItem("likes", JSON.stringify(updatedLikes)); 
       return updatedLikes;
     });
   };
